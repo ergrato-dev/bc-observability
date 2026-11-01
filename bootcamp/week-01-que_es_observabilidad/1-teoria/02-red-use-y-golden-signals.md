@@ -33,16 +33,7 @@ RED mira el servicio desde fuera, como lo ve el cliente. USE mira lo que hay deb
 
 ## Golden signals
 
-El libro de SRE de Google propone cuatro señales para cualquier sistema orientado a usuarios:
-
-| Golden signal | Equivale a |
-|---|---|
-| Latency | Duration de RED |
-| Traffic | Rate de RED |
-| Errors | Errors de RED |
-| Saturation | Saturation de USE |
-
-Son RED más la saturación. Si solo pudieras medir cuatro cosas, serían estas.
+El libro de SRE de Google propone cuatro señales para cualquier sistema orientado a usuarios: latency, traffic, errors y saturation. Las tres primeras son la Duration, el Rate y los Errors de RED; la cuarta es la Saturation de USE. Si solo pudieras medir cuatro cosas, serían estas.
 
 ![RED para servicios, USE para recursos](../0-assets/03-red-y-use.svg)
 

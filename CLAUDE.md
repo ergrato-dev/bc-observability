@@ -124,7 +124,7 @@ week-NN-nombre_del_tema/
 ├── README.md                  # Descripción, objetivos, tabla de contenidos, navegación
 ├── rubrica-evaluacion.md      # Conocimiento 30 / Desempeño 40 / Producto 30
 ├── checks.json                # Autograding (ver docs/autograding.md)
-├── 0-assets/                  # Diagramas SVG (≥ 3), enlazados desde algún .md
+├── 0-assets/                  # Diagramas SVG, los que la semana necesite, enlazados desde algún .md
 ├── 1-teoria/                  # 1–3 archivos, ≤ 600 palabras de prosa c/u
 ├── 2-practicas/
 │   ├── README.md              # Índice de labs con duración
@@ -218,7 +218,7 @@ Bandas: Sobresaliente 90–100, Notable 80–89, Aprobado 70–79.
 ## Contenido esperado por sección
 
 ### 0-assets/
-Mínimo 3 diagramas **SVG** (`NN-nombre.svg`, en orden de lectura), cada uno incrustado como imagen o enlazado desde algún `.md` de la semana, con la ruta relativa `../0-assets/NN-nombre.svg`. Nunca arte ASCII ni Mermaid en `0-assets/`; Mermaid solo vale en los entregables del alumno, donde el autograding lo lee como texto.
+Diagramas **SVG** (`NN-nombre.svg`, en orden de lectura): **los que la semana necesite, que no sobren ni falten**. Cada concepto que se entiende mejor con un dibujo (una arquitectura, un flujo entre servicios, una secuencia en el tiempo) lleva el suyo; ningún diagrama decora ni repite una tabla que ya está en el texto. Cada uno va incrustado como imagen o enlazado desde algún `.md` de la semana, con la ruta relativa `../0-assets/NN-nombre.svg`. Nunca arte ASCII ni Mermaid en `0-assets/`; Mermaid solo vale en los entregables del alumno, donde el autograding lo lee como texto.
 
 - `viewBox`, `role="img"`, `<title>` y `<desc>` (la explicación del diagrama, para lectores de pantalla) obligatorios.
 - Tema oscuro, sin degradados, sans-serif. Una línea de subtítulo bajo el título dice qué hay que mirar.

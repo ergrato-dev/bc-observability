@@ -3,7 +3,7 @@
 #   1. Nombres de carpeta week-NN-slug y lab-NN-slug bien formados.
 #   2. Enlaces relativos en markdown que resuelven a una ruta real.
 #   3. Seccion "Navegacion" en el README de cada semana publicada.
-#   4. 0-assets/ solo con SVG (>= 3 por semana), accesibles y enlazados desde algun .md.
+#   4. 0-assets/ solo con SVG, accesibles y enlazados desde algun .md (ninguno sobra).
 #   5. checks.json valido como JSON.
 #   6. Todo .sh con shebang `env bash`, `set -euo pipefail` y bit de ejecucion.
 #   7. Archivos de teoria de semanas publicadas con 600 palabras o menos.
@@ -86,14 +86,9 @@ while IFS= read -r rm; do
 done < <(find bootcamp -mindepth 2 -maxdepth 2 -iname "README.md")
 
 echo "== 4. Diagramas SVG en 0-assets/ =="
-while IFS= read -r dir; do
-  if (( $(find "$dir" -name '*.svg' | wc -l) < 3 )); then
-    echo "MENOS DE 3 SVG: $dir"; fail=1
-  fi
-  while IFS= read -r otro; do
-    echo "NO ES SVG: $otro"; fail=1
-  done < <(find "$dir" -type f ! -name '*.svg')
-done < <(find bootcamp -type d -name 0-assets)
+while IFS= read -r otro; do
+  echo "NO ES SVG: $otro"; fail=1
+done < <(find bootcamp -path "*/0-assets/*" -type f ! -name '*.svg')
 while IFS= read -r svg; do
   for req in 'viewBox=' 'role="img"' '<title' '<desc'; do
     grep -q "$req" "$svg" || { echo "SVG SIN $req: $svg"; fail=1; }
