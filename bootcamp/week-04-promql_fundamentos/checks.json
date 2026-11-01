@@ -1,0 +1,168 @@
+{
+  "semana": "04",
+  "titulo": "PromQL: fundamentos",
+  "perfil": "metrics",
+  "checks": [
+    {
+      "id": "entrega-arranca",
+      "descripcion": "La tienda de la entrega arranca con el perfil metrics y registra tráfico, también cobros fallidos (el autograding los provoca durante 30 s)",
+      "cmd": "TIENDA={proyecto} ./scripts/lab-up.sh metrics >/dev/null 2>&1; prev=$(curl -s 127.0.0.1:18003/admin/faults); curl -s -X PUT 127.0.0.1:18003/admin/faults -H 'Content-Type: application/json' -d '{\"error_rate\":0.5,\"latency_ms\":80,\"jitter_ms\":40,\"timeout_rate\":0}' >/dev/null; sleep 30; curl -s -X PUT 127.0.0.1:18003/admin/faults -H 'Content-Type: application/json' -d \"$prev\" >/dev/null; sleep 20; ./scripts/promql.sh 'sum(increase(payment_failures_total[2m])) > 0'",
+      "assert": "stdout~^\\{\\} [0-9]",
+      "pista": "3-proyecto/README.md, punto de partida"
+    },
+    {
+      "id": "q01",
+      "descripcion": "01-pedidos-por-segundo.promql — ¿Cuántos pedidos por segundo entran?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/01-pedidos-por-segundo.promql | awk -v want='{}' -v lo=0.01 -v hi=50 -v need='' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-02-tasas/README.md, paso 3"
+    },
+    {
+      "id": "q02",
+      "descripcion": "02-pedidos-fallidos-por-codigo.promql — ¿Cuántos pedidos por segundo fallan, y con qué código de estado?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/02-pedidos-fallidos-por-codigo.promql | awk -v want='status_code' -v lo=0 -v hi=50 -v need='status_code=\"402\"' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 2"
+    },
+    {
+      "id": "q03",
+      "descripcion": "03-fraccion-de-pedidos-fallidos.promql — ¿Qué fracción de los pedidos falla?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/03-fraccion-de-pedidos-fallidos.promql | awk -v want='{}' -v lo=0 -v hi=1 -v need='' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 4"
+    },
+    {
+      "id": "q04",
+      "descripcion": "04-cobros-fallidos-por-motivo.promql — ¿Cuántos cobros han fallado en la última hora, y por qué motivo?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/04-cobros-fallidos-por-motivo.promql | awk -v want='reason' -v lo=0 -v hi=1e+07 -v need='reason=\"pagos_status_503\"' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-02-tasas/README.md, paso 5"
+    },
+    {
+      "id": "q05",
+      "descripcion": "05-checkout-p50.promql — ¿Cuánto tarda un checkout en el percentil 50?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/05-checkout-p50.promql | awk -v want='{}' -v lo=0 -v hi=60 -v need='' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-04-percentiles/README.md, paso 2"
+    },
+    {
+      "id": "q06",
+      "descripcion": "06-checkout-p95.promql — ¿Cuánto tarda un checkout en el percentil 95?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/06-checkout-p95.promql | awk -v want='{}' -v lo=0 -v hi=60 -v need='' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-04-percentiles/README.md, paso 2"
+    },
+    {
+      "id": "q07",
+      "descripcion": "07-checkout-p99.promql — ¿Cuánto tarda un checkout en el percentil 99?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/07-checkout-p99.promql | awk -v want='{}' -v lo=0 -v hi=60 -v need='' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-04-percentiles/README.md, paso 2"
+    },
+    {
+      "id": "q08",
+      "descripcion": "08-latencia-de-cada-paso.promql — ¿Qué paso del checkout tarda más? Percentil 95 de las tres llamadas que hace pedidos: la ficha y la reserva en catalogo y el cobro en pagos",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/08-latencia-de-cada-paso.promql | awk -v want='job,route' -v lo=0 -v hi=60 -v need='route=\"/charges\"' -v cnt='3' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-04-percentiles/README.md, paso 3"
+    },
+    {
+      "id": "q09",
+      "descripcion": "09-cobros-fantasma-por-segundo.promql — ¿Cuántos cobros por segundo aprueba pagos en pedidos que acaban fallando?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/09-cobros-fantasma-por-segundo.promql | awk -v want='{}' -v lo=-1 -v hi=50 -v need='' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 6"
+    },
+    {
+      "id": "q10",
+      "descripcion": "10-aciertos-de-cache.promql — ¿Qué fracción de las lecturas de producto sirve la caché de Valkey?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/10-aciertos-de-cache.promql | awk -v want='{}' -v lo=0 -v hi=1 -v need='' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 4"
+    },
+    {
+      "id": "q11",
+      "descripcion": "11-notificaciones-por-resultado.promql — ¿Cuántas notificaciones por segundo se envían y cuántas se descartan?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/11-notificaciones-por-resultado.promql | awk -v want='result' -v lo=0 -v hi=50 -v need='result=\"sent\"' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 2"
+    },
+    {
+      "id": "q12",
+      "descripcion": "12-peticiones-por-servicio.promql — ¿Cuántas peticiones por segundo atiende cada servicio?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/12-peticiones-por-servicio.promql | awk -v want='job' -v lo=0 -v hi=1000 -v need='job=\"catalogo\"' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 2"
+    },
+    {
+      "id": "q13",
+      "descripcion": "13-errores-5xx-por-servicio.promql — ¿Qué fracción de las peticiones de cada servicio responde 5xx?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/13-errores-5xx-por-servicio.promql | awk -v want='job' -v lo=0 -v hi=1 -v need='job=\"pagos\"' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 4"
+    },
+    {
+      "id": "q14",
+      "descripcion": "14-rutas-mas-lentas.promql — ¿Cuáles son las tres rutas más lentas de la tienda en el percentil 95?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/14-rutas-mas-lentas.promql | awk -v want='job,route' -v lo=0 -v hi=60 -v need='' -v cnt='3' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-04-percentiles/README.md, paso 6"
+    },
+    {
+      "id": "q15",
+      "descripcion": "15-memoria-por-servicio.promql — ¿Cuánta memoria usa cada servicio de la tienda?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/15-memoria-por-servicio.promql | awk -v want='container_label_com_docker_compose_service' -v lo=0 -v hi=1e+11 -v need='container_label_com_docker_compose_service=\"catalogo\"' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 5"
+    },
+    {
+      "id": "q16",
+      "descripcion": "16-cpu-por-servicio.promql — ¿Cuánta CPU usa cada servicio de la tienda?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/16-cpu-por-servicio.promql | awk -v want='container_label_com_docker_compose_service' -v lo=0 -v hi=256 -v need='container_label_com_docker_compose_service=\"catalogo\"' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 5"
+    },
+    {
+      "id": "q17",
+      "descripcion": "17-cpu-del-host-ocupada.promql — ¿Qué fracción de la CPU del host está ocupada?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/17-cpu-del-host-ocupada.promql | awk -v want='{}' -v lo=0 -v hi=1 -v need='' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 5"
+    },
+    {
+      "id": "q18",
+      "descripcion": "18-memoria-del-host-disponible.promql — ¿Qué fracción de la memoria del host está disponible?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/18-memoria-del-host-disponible.promql | awk -v want='instance,job' -v lo=0 -v hi=1 -v need='job=\"node-exporter\"' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-03-agregaciones/README.md, paso 5"
+    },
+    {
+      "id": "q19",
+      "descripcion": "19-reinicios-por-servicio.promql — ¿Cuántas veces se ha reiniciado cada servicio de la tienda en la última hora?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/19-reinicios-por-servicio.promql | awk -v want='job' -v lo=0 -v hi=10000 -v need='' -v cnt='4' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-02-tasas/README.md, paso 6"
+    },
+    {
+      "id": "q20",
+      "descripcion": "20-pedidos-en-la-ultima-hora.promql — ¿Cuántos pedidos se han creado en la última hora?",
+      "cmd": "./scripts/promql.sh {proyecto}/libreta/20-pedidos-en-la-ultima-hora.promql | awk -v want='{}' -v lo=0 -v hi=1e+07 -v need='' -v cnt='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; else if (cnt!=\"\" && n!=cnt+0) bad=n \" series\"; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-02-tasas/README.md, paso 5"
+    },
+    {
+      "id": "percentiles-ordenados",
+      "descripcion": "Los percentiles del checkout están ordenados: p50 ≤ p95 ≤ p99",
+      "cmd": "for p in 05-checkout-p50 06-checkout-p95 07-checkout-p99; do ./scripts/promql.sh {proyecto}/libreta/$p.promql | awk '{print $2}'; done | paste -sd ' ' | awk 'NF==3 && $1>0 && $1<=$2 && $2<=$3 {print \"ordenados\"}'",
+      "assert": "stdout~^ordenados$",
+      "pista": "2-practicas/lab-04-percentiles/README.md, paso 2"
+    },
+    {
+      "id": "percentiles-con-buckets",
+      "descripcion": "Los cuatro percentiles de la libreta se calculan con histogram_quantile sobre los buckets, agrupando por le",
+      "cmd": "grep -l 'histogram_quantile' {proyecto}/libreta/0[5-8]-*.promql | xargs -r grep -l '_bucket' | xargs -r grep -lE 'by \\([^)]*le' | wc -l",
+      "assert": "stdout~^4$",
+      "pista": "2-practicas/lab-04-percentiles/README.md, paso 2"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+# ¿Cuánto tarda un checkout en el percentil 99?
+# Devuelve: un valor sin labels, en segundos, con una ventana de 5m.
+
+histogram_quantile(0.99, sum by (le) (rate(http_server_request_duration_seconds_bucket{job="pedidos", method="POST", route="/orders"}[5m])))

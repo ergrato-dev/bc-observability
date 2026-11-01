@@ -1,0 +1,4 @@
+# ¿Cuánta memoria usa cada servicio de la tienda?
+# Devuelve: una serie por servicio de Compose (label container_label_com_docker_compose_service), en bytes. Solo el proyecto tienda.
+#
+# TODO: escribe aquí la consulta.

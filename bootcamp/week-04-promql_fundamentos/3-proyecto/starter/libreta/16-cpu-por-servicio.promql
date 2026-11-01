@@ -1,0 +1,4 @@
+# ¿Cuánta CPU usa cada servicio de la tienda?
+# Devuelve: una serie por servicio de Compose (label container_label_com_docker_compose_service), en núcleos (1 = una CPU entera), con una ventana de 5m.
+#
+# TODO: escribe aquí la consulta.

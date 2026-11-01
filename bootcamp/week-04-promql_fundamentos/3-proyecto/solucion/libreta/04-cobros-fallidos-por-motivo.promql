@@ -1,0 +1,4 @@
+# ¿Cuántos cobros han fallado en la última hora, y por qué motivo?
+# Devuelve: una serie por reason, en número de cobros, en la última hora.
+
+sum by (reason) (increase(payment_failures_total[1h]))

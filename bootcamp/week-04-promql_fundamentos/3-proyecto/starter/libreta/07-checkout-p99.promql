@@ -1,0 +1,4 @@
+# ¿Cuánto tarda un checkout en el percentil 99?
+# Devuelve: un valor sin labels, en segundos, con una ventana de 5m.
+#
+# TODO: escribe aquí la consulta.

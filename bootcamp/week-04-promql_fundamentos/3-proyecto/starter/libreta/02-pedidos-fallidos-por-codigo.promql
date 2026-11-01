@@ -1,0 +1,4 @@
+# ¿Cuántos pedidos por segundo fallan, y con qué código de estado?
+# Devuelve: una serie por status_code (todos menos 201), en pedidos por segundo, con una ventana de 5m.
+#
+# TODO: escribe aquí la consulta.

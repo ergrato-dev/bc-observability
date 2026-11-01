@@ -1,0 +1,4 @@
+# ¿Cuántos cobros por segundo aprueba pagos en pedidos que acaban fallando?
+# Devuelve: un valor sin labels, en cobros por segundo, con una ventana de 5m. Puede salir ligeramente negativo: pagos y pedidos no se scrapean en el mismo instante.
+#
+# TODO: escribe aquí la consulta.

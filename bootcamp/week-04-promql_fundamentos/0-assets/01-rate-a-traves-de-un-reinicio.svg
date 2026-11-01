@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 530" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">rate a través de un reinicio</title>
+  <desc id="d">Nueve muestras de orders_created_total, una cada 15 segundos: 100, 110, 121, 133, y tras reiniciarse pedidos, 4, 15, 27, 38 y 50. El range vector [2m] contiene las nueve; el instant vector, solo la última. Restar la última de la primera da −50. rate e increase detectan la bajada, suman el valor previo (133) a las muestras posteriores y obtienen un aumento de unos 83 pedidos, 0,69 por segundo.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="960" height="530" fill="#0d1117"/>
+  <rect width="5" height="530" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">rate a través de un reinicio</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">rate mira todas las muestras de la ventana y, si el contador baja, entiende que volvió a 0.</text>
+  <line x1="80" y1="372" x2="806" y2="372" stroke="#30363d" stroke-width="1.5"/>
+  <text x="70" y="376" fill="#8b949e" font-size="11" font-weight="400" text-anchor="end">0</text>
+  <text x="110" y="392" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">0 s</text>
+  <text x="192" y="392" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">15 s</text>
+  <text x="274" y="392" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">30 s</text>
+  <text x="356" y="392" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">45 s</text>
+  <text x="438" y="392" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">60 s</text>
+  <text x="520" y="392" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">75 s</text>
+  <text x="602" y="392" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">90 s</text>
+  <text x="684" y="392" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">105 s</text>
+  <text x="766" y="392" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">120 s</text>
+  <polyline points="356,192.45 438,187.04999999999998 520,172.2 602,156.0 684,141.14999999999998 766,124.94999999999999" fill="none" stroke="#F5A800" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="758" y="114.94999999999999" fill="#F5A800" font-size="12" font-weight="400" text-anchor="end">lo que cuenta rate: 50 + 133 = 183</text>
+  <polyline points="110,237.0 192,223.5 274,208.64999999999998 356,192.45 438,366.6 520,351.75 602,335.55 684,320.7 766,304.5" fill="none" stroke="#79c0ff" stroke-width="2"/>
+  <circle cx="110" cy="237.0" r="5" fill="#79c0ff"/>
+  <text x="119" y="253.0" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start">100</text>
+  <circle cx="192" cy="223.5" r="5" fill="#79c0ff"/>
+  <text x="201" y="239.5" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start">110</text>
+  <circle cx="274" cy="208.64999999999998" r="5" fill="#79c0ff"/>
+  <text x="283" y="224.64999999999998" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start">121</text>
+  <circle cx="356" cy="192.45" r="5" fill="#79c0ff"/>
+  <text x="365" y="208.45" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start">133</text>
+  <circle cx="438" cy="366.6" r="5" fill="#79c0ff"/>
+  <text x="447" y="382.6" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start">4</text>
+  <circle cx="520" cy="351.75" r="5" fill="#79c0ff"/>
+  <text x="529" y="367.75" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start">15</text>
+  <circle cx="602" cy="335.55" r="5" fill="#79c0ff"/>
+  <text x="611" y="351.55" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start">27</text>
+  <circle cx="684" cy="320.7" r="5" fill="#79c0ff"/>
+  <text x="693" y="336.7" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start">38</text>
+  <circle cx="766" cy="304.5" r="5" fill="#79c0ff"/>
+  <text x="775" y="320.5" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start">50</text>
+  <rect x="368" y="302.6" width="140" height="36" rx="6" fill="#161b22" stroke="#f85149"/>
+  <text x="438" y="316.6" fill="#f85149" font-size="11" font-weight="600" text-anchor="middle">reinicio de pedidos</text>
+  <text x="438" y="330.6" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">133 → 4</text>
+  <rect x="96" y="96" width="684" height="282" rx="6" fill="#d2a8ff" fill-opacity="0.06" stroke="#d2a8ff" stroke-dasharray="6 4"/>
+  <text x="106" y="116" fill="#d2a8ff" font-size="12" font-weight="600" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">orders_created_total[2m]: range vector, las 9 muestras</text>
+  <circle cx="766" cy="304.5" r="9" fill="none" stroke="#3fb950" stroke-width="2"/>
+  <text x="790" y="336.5" fill="#3fb950" font-size="11" font-weight="400" text-anchor="start">instant vector:</text>
+  <text x="790" y="350.5" fill="#3fb950" font-size="11" font-weight="400" text-anchor="start">solo la última (50)</text>
+  <rect x="30" y="430" width="900" height="98" rx="7" fill="#0d1117" stroke="#30363d"/>
+  <text x="50" y="456" fill="#f85149" font-size="13" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">50 − 100 = −50</text>
+  <text x="910" y="456" fill="#8b949e" font-size="12" font-weight="400" text-anchor="end">la resta en crudo: sin sentido</text>
+  <text x="50" y="482" fill="#F5A800" font-size="13" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">increase(...[2m]) ≈ 183 − 100 = 83</text>
+  <text x="910" y="482" fill="#8b949e" font-size="12" font-weight="400" text-anchor="end">pedidos en la ventana</text>
+  <text x="50" y="508" fill="#F5A800" font-size="13" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">rate(...[2m]) ≈ 83 / 120 s = 0,69/s</text>
+  <text x="910" y="508" fill="#8b949e" font-size="12" font-weight="400" text-anchor="end">pedidos por segundo</text>
+</svg>

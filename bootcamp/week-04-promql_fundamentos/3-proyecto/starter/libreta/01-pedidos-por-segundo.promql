@@ -1,0 +1,4 @@
+# ¿Cuántos pedidos por segundo entran?
+# Devuelve: un valor sin labels, en pedidos por segundo, con una ventana de 5m.
+#
+# TODO: escribe aquí la consulta.

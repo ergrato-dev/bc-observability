@@ -1,0 +1,4 @@
+# ¿Qué paso del checkout tarda más? Percentil 95 de las tres llamadas que hace pedidos: la ficha y la reserva en catalogo y el cobro en pagos
+# Devuelve: una serie por job y route (tres en total), en segundos, con una ventana de 5m.
+#
+# TODO: escribe aquí la consulta.
