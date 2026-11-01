@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 890 500" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">group_left: muchos a uno</title>
+  <desc id="d">A la izquierda, tres series de catalogo, una por ruta: 1,62, 1,56 y 0,12 peticiones por segundo. A la derecha, una sola serie con el total de catalogo, 3,30. La división ignoring(route) group_left empareja las tres con la misma serie de la derecha y devuelve una serie por ruta con la fracción del tráfico: 0,49, 0,47 y 0,04. Sin group_left, Prometheus da un error de emparejamiento muchos a uno.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="890" height="500" fill="#0d1117"/>
+  <rect width="5" height="500" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">group_left: muchos a uno</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">Cada serie de la izquierda busca su pareja ignorando route; la de la derecha sirve a las tres.</text>
+  <text x="30" y="104" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">sum by (job, route) (rate(…_count[5m]))</text>
+  <text x="560" y="104" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">sum by (job) (rate(…_count[5m]))</text>
+  <rect x="30" y="120" width="400" height="52" rx="7" fill="#161b22" stroke="#79c0ff"/>
+  <text x="46" y="142" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">job=&quot;catalogo&quot;</text>
+  <text x="46" y="160" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">route=&quot;/products&quot;</text>
+  <text x="414" y="152" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="end">1.62</text>
+  <polyline points="430,146 558,211" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="30" y="190" width="400" height="52" rx="7" fill="#161b22" stroke="#79c0ff"/>
+  <text x="46" y="212" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">job=&quot;catalogo&quot;</text>
+  <text x="46" y="230" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">route=&quot;/products/{product_id}&quot;</text>
+  <text x="414" y="222" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="end">1.56</text>
+  <polyline points="430,216 558,211" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="30" y="260" width="400" height="52" rx="7" fill="#161b22" stroke="#79c0ff"/>
+  <text x="46" y="282" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">job=&quot;catalogo&quot;</text>
+  <text x="46" y="300" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">route=&quot;/products/{product_id}/reserve&quot;</text>
+  <text x="414" y="292" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="end">0.12</text>
+  <polyline points="430,286 558,211" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="560" y="185" width="300" height="52" rx="7" fill="#161b22" stroke="#79c0ff"/>
+  <text x="576" y="216" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">job=&quot;catalogo&quot;</text>
+  <text x="844" y="217" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="end">3.30</text>
+  <rect x="440" y="150" width="110" height="120" rx="7" fill="#0d1117" stroke="#d2a8ff" stroke-dasharray="5 4"/>
+  <text x="495" y="192" fill="#d2a8ff" font-size="12" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">/ ignoring</text>
+  <text x="495" y="210" fill="#d2a8ff" font-size="12" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">(route)</text>
+  <text x="495" y="234" fill="#d2a8ff" font-size="12" font-weight="600" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">group_left</text>
+  <polyline points="230,330 230,368" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="30" y="370" width="830" height="104" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
+  <text x="46" y="392" fill="#3fb950" font-size="12" font-weight="600" text-anchor="start">resultado: los labels del lado «muchos» (el izquierdo), una serie por ruta</text>
+  <text x="46" y="416" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">{job=&quot;catalogo&quot;, route=&quot;/products&quot;}</text>
+  <text x="844" y="416" fill="#e6edf3" font-size="13" font-weight="600" text-anchor="end">0.49</text>
+  <text x="46" y="436" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">{job=&quot;catalogo&quot;, route=&quot;/products/{product_id}&quot;}</text>
+  <text x="844" y="436" fill="#e6edf3" font-size="13" font-weight="600" text-anchor="end">0.47</text>
+  <text x="46" y="456" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">{job=&quot;catalogo&quot;, route=&quot;/products/{product_id}/reserve&quot;}</text>
+  <text x="844" y="456" fill="#e6edf3" font-size="13" font-weight="600" text-anchor="end">0.04</text>
+  <rect x="560" y="270" width="300" height="70" rx="7" fill="none" stroke="#30363d"/>
+  <text x="576" y="294" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">sin group_left:</text>
+  <text x="576" y="314" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">many-to-one matching must</text>
+  <text x="576" y="330" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">be explicit</text>
+</svg>

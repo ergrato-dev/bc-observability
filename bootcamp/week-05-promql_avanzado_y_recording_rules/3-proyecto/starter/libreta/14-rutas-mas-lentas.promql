@@ -1,0 +1,6 @@
+# ¿Cuáles son las tres rutas más lentas de la tienda en el percentil 95?
+# Devuelve: tres series, una por job y route, en segundos, con una ventana de 5m.
+
+topk(3,
+  histogram_quantile(0.95, sum by (job, route, le) (rate(http_server_request_duration_seconds_bucket[5m])))
+)

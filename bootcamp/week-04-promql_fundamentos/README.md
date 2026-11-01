@@ -66,6 +66,6 @@ Desde la raíz del repositorio (el autograding reconstruye la tienda desde `3-pr
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 03 — Métricas y Prometheus](../week-03-metricas_y_prometheus/README.md) | **Semana 04 — PromQL: fundamentos** | Semana 05 — PromQL avanzado y recording rules (próximamente) |
+| [Semana 03 — Métricas y Prometheus](../week-03-metricas_y_prometheus/README.md) | **Semana 04 — PromQL: fundamentos** | [Semana 05 — PromQL avanzado y recording rules](../week-05-promql_avanzado_y_recording_rules/README.md) |
 
 [← Volver al índice del bootcamp](../README.md)

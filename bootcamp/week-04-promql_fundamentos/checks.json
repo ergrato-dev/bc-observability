@@ -6,7 +6,7 @@
     {
       "id": "entrega-arranca",
       "descripcion": "La tienda de la entrega arranca con el perfil metrics y registra tráfico, también cobros fallidos (el autograding los provoca durante 30 s)",
-      "cmd": "TIENDA={proyecto} ./scripts/lab-up.sh metrics >/dev/null 2>&1; prev=$(curl -s 127.0.0.1:18003/admin/faults); curl -s -X PUT 127.0.0.1:18003/admin/faults -H 'Content-Type: application/json' -d '{\"error_rate\":0.5,\"latency_ms\":80,\"jitter_ms\":40,\"timeout_rate\":0}' >/dev/null; sleep 30; curl -s -X PUT 127.0.0.1:18003/admin/faults -H 'Content-Type: application/json' -d \"$prev\" >/dev/null; sleep 20; ./scripts/promql.sh 'sum(increase(payment_failures_total[2m])) > 0'",
+      "cmd": "TIENDA={proyecto} ./scripts/lab-up.sh metrics >/dev/null 2>&1 || { echo 'lab-up.sh falla'; exit 1; }; prev=$(curl -s 127.0.0.1:18003/admin/faults); curl -s -X PUT 127.0.0.1:18003/admin/faults -H 'Content-Type: application/json' -d '{\"error_rate\":0.5,\"latency_ms\":80,\"jitter_ms\":40,\"timeout_rate\":0}' >/dev/null; sleep 30; curl -s -X PUT 127.0.0.1:18003/admin/faults -H 'Content-Type: application/json' -d \"$prev\" >/dev/null; sleep 20; ./scripts/promql.sh 'sum(increase(payment_failures_total[2m])) > 0'",
       "assert": "stdout~^\\{\\} [0-9]",
       "pista": "3-proyecto/README.md, punto de partida"
     },

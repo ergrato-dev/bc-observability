@@ -21,7 +21,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está p
 
 | Semana | Tema | Estado |
 |:--:|---|:--:|
-| 05 | PromQL avanzado y recording rules | ⬜ |
+| [05](week-05-promql_avanzado_y_recording_rules/README.md) | PromQL avanzado y recording rules | ✅ |
 | 06 | Grafana y dashboards como código | ⬜ |
 | 07 | Alertas y Alertmanager | ⬜ |
 | 08 | Logs centralizados con Loki y patrones de logs | ⬜ |

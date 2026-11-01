@@ -1,0 +1,6 @@
+# ¿Qué fracción de las peticiones de cada servicio responde 5xx?
+# Devuelve: una serie por job, entre 0 y 1, con una ventana de 5m. Solo salen los servicios con algún 5xx.
+
+  sum by (job) (rate(http_server_request_duration_seconds_count{status_code=~"5.."}[5m]))
+/
+  sum by (job) (rate(http_server_request_duration_seconds_count[5m]))

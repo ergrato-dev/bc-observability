@@ -1,0 +1,4 @@
+# ¿Qué fracción de la memoria del host está disponible?
+# Devuelve: una serie con los labels instance y job de node-exporter, entre 0 y 1.
+
+node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes

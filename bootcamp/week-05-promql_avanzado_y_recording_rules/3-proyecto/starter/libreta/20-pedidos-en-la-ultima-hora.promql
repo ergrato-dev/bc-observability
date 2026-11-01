@@ -1,0 +1,4 @@
+# ¿Cuántos pedidos se han creado en la última hora?
+# Devuelve: un valor sin labels, en número de pedidos, en la última hora.
+
+sum(increase(orders_created_total[1h]))

@@ -1,0 +1,37 @@
+# Configuración de Prometheus de tu tienda. La monta compose.yaml en
+# /etc/prometheus: tras cambiarla, recárgala con
+#   curl -X POST http://127.0.0.1:9090/-/reload
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  # Un solo job descubre en Docker todo lo que se deja scrapear: los servicios
+  # de la tienda, los exporters y el propio Prometheus.
+  - job_name: docker
+    # Freno de emergencia: un target que exponga más muestras falla el scrape
+    # entero (up = 0) en lugar de llenar Prometheus de series.
+    sample_limit: 10000
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 15s
+        # Solo los contenedores de este proyecto de Compose.
+        filters:
+          - name: label
+            values: ["com.docker.compose.project=tienda"]
+    relabel_configs:
+      # Opt-in: solo los contenedores con prometheus.io/scrape=true.
+      - source_labels: [__meta_docker_container_label_prometheus_io_scrape]
+        regex: "true"
+        action: keep
+      # Dirección = IP del contenedor + el puerto que declara prometheus.io/port.
+      - source_labels: [__meta_docker_network_ip, __meta_docker_container_label_prometheus_io_port]
+        separator: ":"
+        target_label: __address__
+      # job = nombre del servicio en Compose (catalogo, pedidos, node-exporter...).
+      - source_labels: [__meta_docker_container_label_com_docker_compose_service]
+        target_label: job
+      # instance = nombre del contenedor sin la barra inicial, estable entre
+      # reinicios (la IP no lo es).
+      - source_labels: [__meta_docker_container_name]
+        regex: "/(.+)"
+        target_label: instance

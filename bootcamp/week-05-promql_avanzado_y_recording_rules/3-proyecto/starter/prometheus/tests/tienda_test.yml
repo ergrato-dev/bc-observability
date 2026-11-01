@@ -1,0 +1,9 @@
+# Tests unitarios de las recording rules. Se ejecutan con
+#   promtool test rules tests/tienda_test.yml
+rule_files:
+  - ../rules/tienda.yml
+
+evaluation_interval: 15s
+
+tests: []
+# TODO: un test por grupo de reglas (lab 06)
