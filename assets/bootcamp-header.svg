@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 280" width="1200" height="280" role="img" aria-label="Bootcamp Observabilidad — Logs, métricas, trazas y perfiles con OpenTelemetry">
+
+  <!-- ── BACKGROUND ── -->
+  <rect width="1200" height="280" fill="#0d1117"/>
+  <rect x="0" y="0" width="5" height="280" fill="#F5A800"/>
+  <rect x="5" y="0" width="1195" height="1" fill="#21262d"/>
+  <rect x="5" y="279" width="1195" height="1" fill="#21262d"/>
+
+  <!-- ── TRACE PANEL ── -->
+  <rect x="44" y="36" width="466" height="210" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <circle cx="70" cy="57" r="5" fill="#ff5f57"/>
+  <circle cx="88" cy="57" r="5" fill="#febc2e"/>
+  <circle cx="106" cy="57" r="5" fill="#28c840"/>
+  <text x="136" y="62" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#8b949e">trace POST /orders · 412 ms</text>
+  <rect x="44" y="70" width="466" height="1" fill="#21262d"/>
+
+  <!-- time axis -->
+  <g font-family="'Courier New',Courier,monospace" font-size="10" fill="#6e7681">
+    <text x="190" y="88">0</text>
+    <text x="270" y="88">100</text>
+    <text x="350" y="88">200</text>
+    <text x="430" y="88">300</text>
+  </g>
+  <g stroke="#21262d" stroke-width="1">
+    <line x1="192" y1="94" x2="192" y2="236"/>
+    <line x1="275" y1="94" x2="275" y2="236"/>
+    <line x1="355" y1="94" x2="355" y2="236"/>
+    <line x1="435" y1="94" x2="435" y2="236"/>
+  </g>
+
+  <!-- spans: service name + bar -->
+  <g font-family="'Courier New',Courier,monospace" font-size="11.5">
+    <text x="62" y="110" fill="#e6edf3">web</text>
+    <rect x="192" y="101" width="298" height="11" rx="2" fill="#F5A800"/>
+
+    <text x="70" y="130" fill="#e6edf3">pedidos</text>
+    <rect x="200" y="121" width="282" height="11" rx="2" fill="#425CC7"/>
+
+    <text x="78" y="150" fill="#e6edf3">catalogo</text>
+    <rect x="206" y="141" width="46" height="11" rx="2" fill="#3fb950"/>
+
+    <text x="86" y="170" fill="#e6edf3">postgres</text>
+    <rect x="212" y="161" width="30" height="11" rx="2" fill="#79c0ff"/>
+
+    <text x="78" y="190" fill="#e6edf3">pagos</text>
+    <rect x="258" y="181" width="214" height="11" rx="2" fill="#f85149"/>
+    <text x="400" y="190" fill="#0d1117" font-weight="700">ERROR</text>
+
+    <text x="78" y="210" fill="#e6edf3">rabbitmq</text>
+    <rect x="474" y="201" width="8" height="11" rx="2" fill="#d2a8ff"/>
+
+    <text x="86" y="230" fill="#e6edf3">notificaciones</text>
+    <rect x="480" y="221" width="12" height="11" rx="2" fill="#68A063"/>
+  </g>
+
+  <!-- ── RIGHT PANEL ── -->
+  <text x="558" y="88" font-family="'Segoe UI',system-ui,sans-serif" font-size="12" font-weight="700" letter-spacing="5" fill="#F5A800">BOOTCAMP</text>
+  <text x="556" y="150" font-family="'Segoe UI',system-ui,sans-serif" font-size="54" font-weight="800" letter-spacing="1" fill="#e6edf3">Observabilidad</text>
+  <rect x="556" y="163" width="594" height="2" fill="#F5A800"/>
+  <text x="558" y="193" font-family="'Segoe UI',system-ui,sans-serif" font-size="19" font-weight="400" fill="#8b949e">Logs · Métricas · Trazas · Perfiles — 100% open source</text>
+
+  <!-- ── STAT CARDS ── -->
+  <g font-family="'Segoe UI',system-ui,sans-serif" text-anchor="middle">
+    <rect x="558" y="218" width="108" height="40" rx="4" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="612" y="233" font-size="9" font-weight="700" letter-spacing="1.5" fill="#8b949e">SEMANAS</text>
+    <text x="612" y="251" font-size="17" font-weight="800" fill="#e6edf3">22</text>
+
+    <rect x="678" y="218" width="108" height="40" rx="4" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="732" y="233" font-size="9" font-weight="700" letter-spacing="1.5" fill="#8b949e">HORAS</text>
+    <text x="732" y="251" font-size="17" font-weight="800" fill="#e6edf3">220</text>
+
+    <rect x="798" y="218" width="108" height="40" rx="4" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="852" y="233" font-size="9" font-weight="700" letter-spacing="1.5" fill="#8b949e">LABS</text>
+    <text x="852" y="251" font-size="17" font-weight="800" fill="#e6edf3">126</text>
+
+    <rect x="918" y="218" width="108" height="40" rx="4" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="972" y="233" font-size="9" font-weight="700" letter-spacing="1.5" fill="#8b949e">NIVEL</text>
+    <text x="972" y="251" font-size="17" font-weight="800" fill="#F5A800">PRO</text>
+  </g>
+
+  <!-- CTA -->
+  <rect x="1038" y="218" width="112" height="40" rx="4" fill="#F5A800"/>
+  <text x="1094" y="234" font-family="'Courier New',Courier,monospace" font-size="11" font-weight="700" fill="#0d1117" text-anchor="middle">OTLP</text>
+  <text x="1094" y="251" font-family="'Courier New',Courier,monospace" font-size="11" fill="#3d2a00" text-anchor="middle">:4317</text>
+
+</svg>

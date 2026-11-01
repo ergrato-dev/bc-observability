@@ -1,0 +1,34 @@
+# Build outputs
+build/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.ruff_cache/
+.pytest_cache/
+venv/
+
+# Node
+node_modules/
+*.log
+
+# Docker
+.docker/
+
+# Editors
+.DS_Store
+.idea/
+*.swp
+*.swo
+*~
+
+# Secrets (nunca commitear)
+.env
+.env.*
+!.env.example
+secrets/
+*.key
+*.pem
