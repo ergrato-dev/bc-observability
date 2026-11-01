@@ -1,0 +1,7 @@
+# Fragmento de $TIENDA/prometheus/prometheus.yml (lab 06, paso 5).
+scrape_configs:
+  - job_name: docker
+    # Freno de emergencia: un target que exponga más muestras falla el scrape
+    # entero (up = 0) en lugar de llenar Prometheus de series.
+    sample_limit: 10000
+    # ... docker_sd_configs y relabel_configs del lab 04, sin cambios

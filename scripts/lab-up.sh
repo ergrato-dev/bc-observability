@@ -41,6 +41,13 @@ fi
 args=()
 for p in "${perfiles[@]}"; do args+=(--profile "$p"); done
 
+# Prometheus lee el socket de Docker para descubrir sus targets: necesita el
+# grupo dueño del socket tal como lo ve un contenedor (en Colima no es el del host).
+if [[ " ${perfiles[*]} " == *" metrics "* ]]; then
+  DOCKER_GID="$(docker run --rm --entrypoint stat -v /var/run/docker.sock:/s prom/prometheus:v3.15.1 -c %g /s)"
+  export DOCKER_GID
+fi
+
 # --wait: no vuelve hasta que todos los healthchecks están en verde.
 docker compose -f "$RAIZ/app/compose.yaml" "${args[@]}" up -d --build --wait
 docker compose -f "$RAIZ/app/compose.yaml" "${args[@]}" ps --format 'table {{.Service}}\t{{.Status}}\t{{.Ports}}'

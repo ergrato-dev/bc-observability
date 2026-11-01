@@ -26,8 +26,8 @@ Proyecto: *Mapa de observabilidad* — diagrama de servicios, preguntas que hay 
 Labs: logging plano a JSON · middleware structlog con contexto · pino en `notificaciones` · propagar `X-Request-ID` entre servicios · redacción de PII · consultar logs con `jq`.
 Proyecto: los 4 servicios con logs JSON de esquema común y request ID de punta a punta.
 
-**S03 `week-03-metricas_y_prometheus`** — Modelo de datos, pull vs push, counter/gauge/histogram/summary, naming y unidades, labels y cardinalidad, `prometheus-client` y `prom-client`, scrape config, relabeling, node_exporter, cAdvisor, cuándo (no) usar Pushgateway.
-Labs: primer `/metrics` en FastAPI · métricas RED con histogramas · `prom-client` en Node · Prometheus con service discovery de Docker · exporters de host y contenedor · explosión de cardinalidad y cómo detectarla.
+**S03 `week-03-metricas_y_prometheus`** — Modelo de datos, pull vs push, counter/gauge/histogram/summary, naming y unidades, labels y cardinalidad, `prometheus-client` y `@prometheus-io/client` (antes `prom-client`), scrape config, relabeling, node_exporter, cAdvisor, cuándo (no) usar Pushgateway.
+Labs: primer `/metrics` en FastAPI · métricas RED con histogramas · `@prometheus-io/client` en Node · Prometheus con service discovery de Docker · exporters de host y contenedor · explosión de cardinalidad y cómo detectarla.
 Proyecto: métricas RED en todos los servicios + Prometheus con todos los targets en `UP`.
 
 **S04 `week-04-promql_fundamentos`** — Instant vs range vectors, selectores y matchers, `rate`/`irate`/`increase`, resets de counters, `sum by`/`without`, `topk`, `histogram_quantile`, API HTTP de Prometheus.

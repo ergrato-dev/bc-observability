@@ -66,6 +66,6 @@ Desde la raíz del repositorio (el autograding reconstruye la tienda desde `3-pr
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 01 — Qué es observabilidad](../week-01-que_es_observabilidad/README.md) | **Semana 02 — Logs estructurados** | Semana 03 — Métricas y Prometheus (próximamente) |
+| [Semana 01 — Qué es observabilidad](../week-01-que_es_observabilidad/README.md) | **Semana 02 — Logs estructurados** | [Semana 03 — Métricas y Prometheus](../week-03-metricas_y_prometheus/README.md) |
 
 [← Volver al índice del bootcamp](../README.md)

@@ -32,16 +32,16 @@ Verificadas el 2026-10-31 contra Docker Hub, ghcr.io, PyPI, el registro de npm y
 | jq | 1.6 o superior | 01 | Lo necesita `verificar-semana.sh` |
 | structlog | 26.1.0 | 02 | Release del 2026-06-06. Integrado con `logging` para que uvicorn salga en el mismo JSON |
 | pino | 10.4.0 | 02 | Release del 2026-10-02. Sin `pino-http`: un middleware propio de 20 líneas cumple el esquema común sin otra dependencia |
+| Prometheus y promtool | `prom/prometheus:v3.15.1` | 03 | Release del 2026-10-21. 3.16 está en release candidate |
+| prometheus-client | 0.26.0 | 03 | Release del 2026-07-24. Con `disable_created_metrics()`: sin series `_created` |
+| @prometheus-io/client | 0.16.1 | 03 | Release del 2026-08-27. Sustituye a `prom-client` (15.1.3, abandonado); mismo proyecto, ahora bajo la organización Prometheus |
+| node_exporter | `prom/node-exporter:v1.12.1` | 03 | Release del 2026-07-14 |
+| cAdvisor | `ghcr.io/google/cadvisor:0.60.6` | 03 | Release del 2026-09-18. Las imágenes nuevas ya no se publican en `gcr.io` |
 
 ## Pendientes: se fijan al escribir su semana
 
 | Pieza | Semana | Imagen o paquete |
 |---|:--:|---|
-| Prometheus y promtool | 03 | `prom/prometheus` |
-| prometheus-client | 03 | PyPI |
-| prom-client | 03 | npm registry, instalado con pnpm |
-| node_exporter | 03 | `prom/node-exporter` |
-| cAdvisor | 03 | `gcr.io/cadvisor/cadvisor` |
 | Grafana OSS | 06 | `grafana/grafana` (nunca la edición Enterprise) |
 | Alertmanager | 07 | `prom/alertmanager` |
 | blackbox_exporter | 07 | `prom/blackbox-exporter` |

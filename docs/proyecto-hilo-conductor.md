@@ -13,6 +13,8 @@ export TIENDA=bootcamp/week-02-logs_estructurados/3-proyecto/starter
 ./scripts/lab-up.sh        # construye catalogo, pedidos, pagos y notificaciones desde $TIENDA
 ```
 
+Desde la semana 03, la copia incluye también la configuración de los backends que la semana enseña (`prometheus/prometheus.yml` y, más adelante, reglas, dashboards y alertas): `compose.yaml` la monta desde `$TIENDA`, porque también es parte de tu entrega.
+
 Sin `TIENDA`, `lab-up.sh` vuelve a construir `app/`. Tus cambios no se pierden (siguen en tu carpeta), pero dejan de estar en marcha.
 
 ## Componentes

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">Un histograma por dentro</title>
+  <desc id="d">Diez peticiones con duraciones entre 0,012 y 2,1 segundos se cuentan en buckets acumulados: 3 duran 0,05 s o menos, 5 duran 0,1 s o menos, 7 duran 0,25 s o menos, 8 duran 0,5 s o menos y las 10 caben en +Inf. La mitad de las peticiones cae en el bucket de 0,1 s, así que la mediana es como mucho 0,1 s. Prometheus lee los buckets, la cuenta (10) y la suma (3,562 s) desde /metrics.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="960" height="500" fill="#0d1117"/>
+  <rect width="5" height="500" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">Un histograma por dentro</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">Cada bucket cuenta lo que tardó su límite o menos: por eso los de varias réplicas se pueden sumar.</text>
+  <text x="30" y="104" fill="#e6edf3" font-size="13" font-weight="600" text-anchor="start">10 peticiones a GET /products (segundos)</text>
+  <rect x="30" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="57" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">0.012</text>
+  <rect x="92" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="119" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">0.03</text>
+  <rect x="154" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="181" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">0.04</text>
+  <rect x="216" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="243" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">0.08</text>
+  <rect x="278" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="305" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">0.09</text>
+  <rect x="340" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="367" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">0.11</text>
+  <rect x="402" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="429" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">0.2</text>
+  <rect x="464" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="491" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">0.3</text>
+  <rect x="526" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="553" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">0.6</text>
+  <rect x="588" y="116" width="54" height="26" rx="13" fill="#161b22" stroke="#F5A800"/>
+  <text x="615" y="134" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">2.1</text>
+  <text x="30" y="186" fill="#e6edf3" font-size="13" font-weight="600" text-anchor="start">buckets acumulados</text>
+  <text x="126" y="221" fill="#8b949e" font-size="12" font-weight="400" text-anchor="end" font-family="'JetBrains Mono', 'Courier New', monospace">le=&quot;0.05&quot;</text>
+  <rect x="136" y="200" width="138" height="28" rx="4" fill="#79c0ff" fill-opacity="0.25" stroke="#79c0ff"/>
+  <text x="284" y="219" fill="#79c0ff" font-size="13" font-weight="600" text-anchor="start">3</text>
+  <text x="126" y="263" fill="#8b949e" font-size="12" font-weight="400" text-anchor="end" font-family="'JetBrains Mono', 'Courier New', monospace">le=&quot;0.1&quot;</text>
+  <rect x="136" y="242" width="230" height="28" rx="4" fill="#79c0ff" fill-opacity="0.25" stroke="#79c0ff"/>
+  <text x="376" y="261" fill="#79c0ff" font-size="13" font-weight="600" text-anchor="start">5</text>
+  <text x="126" y="305" fill="#8b949e" font-size="12" font-weight="400" text-anchor="end" font-family="'JetBrains Mono', 'Courier New', monospace">le=&quot;0.25&quot;</text>
+  <rect x="136" y="284" width="322" height="28" rx="4" fill="#79c0ff" fill-opacity="0.25" stroke="#79c0ff"/>
+  <text x="468" y="303" fill="#79c0ff" font-size="13" font-weight="600" text-anchor="start">7</text>
+  <text x="126" y="347" fill="#8b949e" font-size="12" font-weight="400" text-anchor="end" font-family="'JetBrains Mono', 'Courier New', monospace">le=&quot;0.5&quot;</text>
+  <rect x="136" y="326" width="368" height="28" rx="4" fill="#79c0ff" fill-opacity="0.25" stroke="#79c0ff"/>
+  <text x="514" y="345" fill="#79c0ff" font-size="13" font-weight="600" text-anchor="start">8</text>
+  <text x="126" y="389" fill="#8b949e" font-size="12" font-weight="400" text-anchor="end" font-family="'JetBrains Mono', 'Courier New', monospace">le=&quot;+Inf&quot;</text>
+  <rect x="136" y="368" width="460" height="28" rx="4" fill="#79c0ff" fill-opacity="0.25" stroke="#79c0ff"/>
+  <text x="606" y="387" fill="#79c0ff" font-size="13" font-weight="600" text-anchor="start">10</text>
+  <line x1="366" y1="194" x2="366" y2="414" stroke="#3fb950" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="374" y="432" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start">la mitad (5) cae en le=&quot;0.1&quot;: mediana ≤ 0,1 s</text>
+  <rect x="660" y="186" width="285" height="250" rx="7" fill="#0d1117" stroke="#30363d"/>
+  <text x="676" y="210" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start">/metrics (labels method, route y status_code omitidos)</text>
+  <text x="676" y="240" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">…_bucket{le=&quot;0.05&quot;}   3</text>
+  <text x="676" y="264" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">…_bucket{le=&quot;0.1&quot;}    5</text>
+  <text x="676" y="288" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">…_bucket{le=&quot;0.25&quot;}   7</text>
+  <text x="676" y="312" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">…_bucket{le=&quot;0.5&quot;}    8</text>
+  <text x="676" y="336" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">…_bucket{le=&quot;+Inf&quot;}  10</text>
+  <text x="676" y="360" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">…_count              10</text>
+  <text x="676" y="384" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">…_sum             3.562</text>
+  <text x="30" y="478" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">_count da el rate y, filtrado por status_code, los errores. _sum / _count es la media. Los buckets, los percentiles.</text>
+</svg>
