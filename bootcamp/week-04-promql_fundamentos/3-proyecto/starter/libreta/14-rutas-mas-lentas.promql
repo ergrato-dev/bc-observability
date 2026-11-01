@@ -1,0 +1,4 @@
+# ¿Cuáles son las tres rutas más lentas de la tienda en el percentil 95?
+# Devuelve: tres series, una por job y route, en segundos, con una ventana de 5m.
+#
+# TODO: escribe aquí la consulta.

@@ -1,0 +1,4 @@
+# ¿Cuántas peticiones por segundo atiende cada servicio?
+# Devuelve: una serie por job, en peticiones por segundo, con una ventana de 5m. notificaciones solo sale si alguien ha llamado a su API HTTP en esos 5 minutos.
+#
+# TODO: escribe aquí la consulta.

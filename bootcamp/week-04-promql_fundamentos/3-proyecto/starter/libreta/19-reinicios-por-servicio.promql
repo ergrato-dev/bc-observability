@@ -1,0 +1,4 @@
+# ¿Cuántas veces se ha reiniciado cada servicio de la tienda en la última hora?
+# Devuelve: una serie por job (los cuatro servicios), en número de reinicios, en la última hora.
+#
+# TODO: escribe aquí la consulta.

@@ -1,0 +1,4 @@
+# ¿Cuántas notificaciones por segundo se envían y cuántas se descartan?
+# Devuelve: una serie por result, en mensajes por segundo, con una ventana de 5m.
+#
+# TODO: escribe aquí la consulta.

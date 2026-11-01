@@ -119,6 +119,16 @@ Cada backend tiene una API HTTP, así que casi todo es verificable con `curl` + 
   "pista": "2-practicas/lab-02-structlog/README.md, paso 5" }
 ```
 
+Para PromQL, `./scripts/promql.sh` evalúa una consulta (o un archivo `.promql`, comentarios incluidos) e imprime una línea por serie, `labels valor`, con 4 decimales; sale con 1 si la consulta da error o viene vacía. La semana 04 evalúa así cada consulta de la libreta del alumno:
+
+```json
+{ "id": "q01",
+  "descripcion": "01-pedidos-por-segundo.promql — ¿Cuántos pedidos por segundo entran?",
+  "cmd": "./scripts/promql.sh {proyecto}/libreta/01-pedidos-por-segundo.promql | awk '...'",
+  "assert": "stdout~^ok$",
+  "pista": "2-practicas/lab-02-tasas/README.md, paso 3" }
+```
+
 ```json
 { "id": "regla-alerta",
   "descripcion": "Las reglas de alerta pasan sus tests unitarios",

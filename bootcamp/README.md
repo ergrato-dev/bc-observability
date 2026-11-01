@@ -15,7 +15,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está p
 | [01](week-01-que_es_observabilidad/README.md) | Qué es observabilidad: señales, RED, USE y golden signals | ✅ |
 | [02](week-02-logs_estructurados/README.md) | Logs estructurados con structlog y pino | ✅ |
 | [03](week-03-metricas_y_prometheus/README.md) | Métricas e instrumentación con Prometheus | ✅ |
-| 04 | PromQL: fundamentos | ⬜ |
+| [04](week-04-promql_fundamentos/README.md) | PromQL: fundamentos | ✅ |
 
 ### Fase 2 — Visualización, alertas y logs centralizados (S05-08, 40 h)
 

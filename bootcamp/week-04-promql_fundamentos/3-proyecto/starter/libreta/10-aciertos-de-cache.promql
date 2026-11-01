@@ -1,0 +1,4 @@
+# ¿Qué fracción de las lecturas de producto sirve la caché de Valkey?
+# Devuelve: un valor sin labels entre 0 y 1, con una ventana de 5m.
+#
+# TODO: escribe aquí la consulta.
