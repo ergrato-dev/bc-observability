@@ -1,0 +1,4 @@
+# ¿Cuántos pedidos por segundo fallan, y con qué código de estado?
+# Devuelve: una serie por status_code (todos menos 201), en pedidos por segundo, con una ventana de 5m.
+
+sum by (status_code) (rate(http_server_request_duration_seconds_count{job="pedidos", method="POST", route="/orders", status_code!="201"}[5m]))

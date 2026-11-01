@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 510" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">De las series en crudo a una recording rule</title>
+  <desc id="d">Unas 165 series de buckets con los labels job, instance, method, route, status_code y le entran en una recording rule que, cada 15 segundos, suma su tasa de 5 minutos por job, route y le. El resultado se guarda como una serie nueva, de unas 105 series, sobre la que otra regla calcula el percentil 95. Dashboards, alertas y SLO leen las reglas. Un panel de una hora lee unas 500 000 muestras con la consulta en crudo y unas 500 con la regla.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="950" height="510" fill="#0d1117"/>
+  <rect width="5" height="510" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">De las series en crudo a una recording rule</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">La regla se calcula una vez cada 15 s; quien la consulta lee el resultado ya agregado.</text>
+  <rect x="30" y="92" width="230" height="170" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="46" y="118" fill="#F5A800" font-size="14" font-weight="600" text-anchor="start">series en crudo</text>
+  <text x="46" y="146" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">…_bucket{job, instance,</text>
+  <text x="46" y="166" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  method, route,</text>
+  <text x="46" y="186" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  status_code, le}</text>
+  <text x="46" y="206" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace"></text>
+  <text x="46" y="226" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">~165 series</text>
+  <polyline points="260,177 318,177" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <rect x="320" y="92" width="270" height="170" rx="7" fill="#0d1117" stroke="#d2a8ff" stroke-dasharray="6 4"/>
+  <text x="336" y="118" fill="#d2a8ff" font-size="13" font-weight="600" text-anchor="start">recording rule · cada 15 s</text>
+  <text x="336" y="148" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">sum by (job, route, le) (</text>
+  <text x="336" y="168" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  rate(…_bucket[5m])</text>
+  <text x="336" y="188" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">)</text>
+  <text x="336" y="230" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start">record:</text>
+  <text x="336" y="248" fill="#d2a8ff" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">job_route_le:…_bucket:rate5m</text>
+  <polyline points="590,177 648,177" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="650" y="92" width="270" height="170" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
+  <text x="666" y="118" fill="#3fb950" font-size="14" font-weight="600" text-anchor="start">serie nueva en la TSDB</text>
+  <text x="666" y="146" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">{job, route, le}</text>
+  <text x="666" y="170" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">~105 series</text>
+  <text x="666" y="202" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start">y sobre ella, otra regla:</text>
+  <text x="666" y="220" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">histogram_quantile(0.95, …)</text>
+  <text x="666" y="238" fill="#3fb950" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">→ job_route:…:p95_rate5m</text>
+  <polyline points="785,262 682,296" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="636" y="298" width="92" height="50" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="682.0" y="321.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">Dashboards</text>
+  <text x="682.0" y="338.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">semana 06</text>
+  <polyline points="785,262 780,296" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="734" y="298" width="92" height="50" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="780.0" y="321.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">Alertas</text>
+  <text x="780.0" y="338.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">semana 07</text>
+  <polyline points="785,262 878,296" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="832" y="298" width="92" height="50" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="878.0" y="321.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">SLO</text>
+  <text x="878.0" y="338.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">semana 15</text>
+  <rect x="30" y="380" width="890" height="110" rx="7" fill="#0d1117" stroke="#30363d"/>
+  <text x="46" y="404" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">Un panel de 1 h con el p95 de cada ruta (un punto cada 15 s): muestras leídas por cada refresco</text>
+  <text x="46" y="436" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start">consulta en crudo</text>
+  <rect x="210" y="424" width="560" height="16" rx="3" fill="#F5A800"/>
+  <text x="780" y="437" fill="#F5A800" font-size="13" font-weight="600" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">≈ 500 000</text>
+  <text x="46" y="470" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start">recording rule</text>
+  <rect x="210" y="458" width="3" height="16" fill="#3fb950"/>
+  <text x="222" y="471" fill="#3fb950" font-size="13" font-weight="600" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">≈ 500</text>
+</svg>

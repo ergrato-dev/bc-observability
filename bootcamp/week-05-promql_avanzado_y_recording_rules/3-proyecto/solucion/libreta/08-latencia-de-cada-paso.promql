@@ -1,0 +1,8 @@
+# ¿Qué paso del checkout tarda más? Percentil 95 de las tres llamadas que hace pedidos: la ficha y la reserva en catalogo y el cobro en pagos
+# Devuelve: una serie por job y route (tres en total), en segundos, con una ventana de 5m.
+
+histogram_quantile(0.95,
+  sum by (job, route, le) (
+    rate(http_server_request_duration_seconds_bucket{job=~"catalogo|pagos", route=~`/products/\{product_id\}(/reserve)?|/charges`}[5m])
+  )
+)

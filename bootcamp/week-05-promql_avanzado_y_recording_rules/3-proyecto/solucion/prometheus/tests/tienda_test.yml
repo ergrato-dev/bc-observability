@@ -1,0 +1,121 @@
+# Tests unitarios de las recording rules: series de entrada inventadas,
+# valores esperados calculados a mano. Se ejecutan con
+#   promtool test rules tests/tienda_test.yml
+# Notación de values: '0+9x40' = empieza en 0 y suma 9 en cada paso, 40 pasos.
+# Con interval 15s, sumar 9 cada 15 s es una tasa de 0,6/s.
+rule_files:
+  - ../rules/tienda.yml
+
+evaluation_interval: 15s
+
+# Compara con tolerancia: 0,8 y 0,7999999999999999 son el mismo número.
+fuzzy_compare: true
+
+tests:
+  - name: RED de pedidos y catalogo
+    interval: 15s
+    input_series:
+      - series: 'http_server_request_duration_seconds_count{job="pedidos", instance="tienda-pedidos-1", method="POST", route="/orders", status_code="201"}'
+        values: '0+9x40'      # 0,6/s
+      - series: 'http_server_request_duration_seconds_count{job="pedidos", instance="tienda-pedidos-1", method="POST", route="/orders", status_code="503"}'
+        values: '0+3x40'      # 0,2/s
+      # Un 404 es error del cliente, no del servicio: no cuenta como error.
+      - series: 'http_server_request_duration_seconds_count{job="pedidos", instance="tienda-pedidos-1", method="POST", route="/orders", status_code="404"}'
+        values: '0+3x40'      # 0,2/s
+      - series: 'http_server_request_duration_seconds_count{job="catalogo", instance="tienda-catalogo-1", method="GET", route="/products", status_code="200"}'
+        values: '0+30x40'     # 2/s
+    promql_expr_test:
+      - expr: job:http_server_requests:rate5m
+        eval_time: 10m
+        exp_samples:
+          - labels: 'job:http_server_requests:rate5m{job="pedidos"}'
+            value: 1
+          - labels: 'job:http_server_requests:rate5m{job="catalogo"}'
+            value: 2
+      - expr: job:http_server_requests_errors:rate5m
+        eval_time: 10m
+        exp_samples:
+          - labels: 'job:http_server_requests_errors:rate5m{job="pedidos"}'
+            value: 0.2
+      - expr: job:http_server_requests_errors:ratio_rate5m
+        eval_time: 10m
+        exp_samples:
+          - labels: 'job:http_server_requests_errors:ratio_rate5m{job="pedidos"}'
+            value: 0.2
+      # catalogo no tiene ninguna serie 5xx: su ratio no existe (no vale 0).
+      - expr: job:http_server_requests_errors:ratio_rate5m{job="catalogo"}
+        eval_time: 10m
+        exp_samples: []
+
+  - name: Percentil 95 del cobro
+    interval: 15s
+    input_series:
+      # 15 cobros cada 15 s: 9 tardan 0,1 s o menos y los 15, 0,25 s o menos.
+      - series: 'http_server_request_duration_seconds_bucket{job="pagos", instance="tienda-pagos-1", method="POST", route="/charges", status_code="201", le="0.05"}'
+        values: '0x40'
+      - series: 'http_server_request_duration_seconds_bucket{job="pagos", instance="tienda-pagos-1", method="POST", route="/charges", status_code="201", le="0.1"}'
+        values: '0+9x40'
+      - series: 'http_server_request_duration_seconds_bucket{job="pagos", instance="tienda-pagos-1", method="POST", route="/charges", status_code="201", le="0.25"}'
+        values: '0+15x40'
+      - series: 'http_server_request_duration_seconds_bucket{job="pagos", instance="tienda-pagos-1", method="POST", route="/charges", status_code="201", le="+Inf"}'
+        values: '0+15x40'
+    promql_expr_test:
+      - expr: job_route_le:http_server_request_duration_seconds_bucket:rate5m{le="0.1"}
+        eval_time: 10m
+        exp_samples:
+          - labels: 'job_route_le:http_server_request_duration_seconds_bucket:rate5m{job="pagos", route="/charges", le="0.1"}'
+            value: 0.6
+      # El 95 % cae en el bucket 0,1-0,25 s, que empieza en el 60 %:
+      # 0,1 + (0,95 - 0,6) / (1 - 0,6) × 0,15 = 0,23125
+      - expr: job_route:http_server_request_duration_seconds:p95_rate5m
+        eval_time: 10m
+        exp_samples:
+          - labels: 'job_route:http_server_request_duration_seconds:p95_rate5m{job="pagos", route="/charges"}'
+            value: 0.23125
+
+  - name: Negocio
+    interval: 15s
+    input_series:
+      - series: 'orders_created_total{job="pedidos", instance="tienda-pedidos-1"}'
+        values: '0+6x40'      # 0,4/s
+      - series: 'payment_failures_total{job="pedidos", instance="tienda-pedidos-1", reason="pagos_timeout"}'
+        values: '0+1.5x40'    # 0,1/s
+      - series: 'payment_failures_total{job="pedidos", instance="tienda-pedidos-1", reason="pagos_status_503"}'
+        values: '0+3x40'      # 0,2/s
+      - series: 'catalog_cache_requests_total{job="catalogo", instance="tienda-catalogo-1", result="hit"}'
+        values: '0+3x40'      # 0,2/s
+      - series: 'catalog_cache_requests_total{job="catalogo", instance="tienda-catalogo-1", result="miss"}'
+        values: '0+9x40'      # 0,6/s
+    promql_expr_test:
+      - expr: job:orders_created:rate5m
+        eval_time: 10m
+        exp_samples:
+          - labels: 'job:orders_created:rate5m{job="pedidos"}'
+            value: 0.4
+      - expr: job_reason:payment_failures:rate5m
+        eval_time: 10m
+        exp_samples:
+          - labels: 'job_reason:payment_failures:rate5m{job="pedidos", reason="pagos_timeout"}'
+            value: 0.1
+          - labels: 'job_reason:payment_failures:rate5m{job="pedidos", reason="pagos_status_503"}'
+            value: 0.2
+      - expr: job:catalog_cache_hits:ratio_rate5m
+        eval_time: 10m
+        exp_samples:
+          - labels: 'job:catalog_cache_hits:ratio_rate5m{job="catalogo"}'
+            value: 0.25
+
+  - name: Un reinicio de pedidos no falsea la tasa
+    interval: 15s
+    input_series:
+      # 0,4/s durante 2,5 min; pedidos se reinicia y su contador vuelve a
+      # empezar (6 en el primer scrape tras el reinicio) al mismo ritmo.
+      - series: 'orders_created_total{job="pedidos", instance="tienda-pedidos-1"}'
+        values: '0+6x10 6+6x20'
+    promql_expr_test:
+      - expr: job:orders_created:rate5m
+        # La ventana (1m, 6m] contiene el reinicio: 60 -> 6.
+        eval_time: 6m
+        exp_samples:
+          - labels: 'job:orders_created:rate5m{job="pedidos"}'
+            value: 0.4

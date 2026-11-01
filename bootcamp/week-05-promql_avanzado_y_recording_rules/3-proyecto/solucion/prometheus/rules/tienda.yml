@@ -1,0 +1,36 @@
+# Recording rules de la tienda. Nombres con la convención level:metric:operations:
+#   level      labels que conserva el resultado (job, job_route...)
+#   metric     la métrica de origen, sin _total
+#   operations lo que se le ha hecho, de dentro afuera (rate5m, ratio_rate5m...)
+# Las consultan los dashboards (semana 06), las alertas (07) y los SLO (15).
+groups:
+  - name: tienda_red
+    rules:
+      # Rate: peticiones por segundo de cada servicio.
+      - record: job:http_server_requests:rate5m
+        expr: sum by (job) (rate(http_server_request_duration_seconds_count[5m]))
+
+      # Errors: peticiones 5xx por segundo y su fracción sobre el total.
+      - record: job:http_server_requests_errors:rate5m
+        expr: sum by (job) (rate(http_server_request_duration_seconds_count{status_code=~"5.."}[5m]))
+      - record: job:http_server_requests_errors:ratio_rate5m
+        expr: job:http_server_requests_errors:rate5m / job:http_server_requests:rate5m
+
+      # Duration: la tasa de cada bucket se guarda una vez y de ella salen todos
+      # los percentiles, sin volver a leer los datos en crudo.
+      - record: job_route_le:http_server_request_duration_seconds_bucket:rate5m
+        expr: sum by (job, route, le) (rate(http_server_request_duration_seconds_bucket[5m]))
+      - record: job_route:http_server_request_duration_seconds:p95_rate5m
+        expr: histogram_quantile(0.95, job_route_le:http_server_request_duration_seconds_bucket:rate5m)
+
+  - name: tienda_negocio
+    rules:
+      - record: job:orders_created:rate5m
+        expr: sum by (job) (rate(orders_created_total[5m]))
+      - record: job_reason:payment_failures:rate5m
+        expr: sum by (job, reason) (rate(payment_failures_total[5m]))
+      - record: job:catalog_cache_hits:ratio_rate5m
+        expr: |2
+            sum by (job) (rate(catalog_cache_requests_total{result="hit"}[5m]))
+          /
+            sum by (job) (rate(catalog_cache_requests_total[5m]))

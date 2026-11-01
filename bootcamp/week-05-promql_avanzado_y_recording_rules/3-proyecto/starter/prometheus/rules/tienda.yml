@@ -1,0 +1,10 @@
+# Recording rules de la tienda. Nombres con la convención level:metric:operations.
+# La lista de reglas que pide la entrega está en 3-proyecto/README.md.
+groups:
+  - name: tienda_red
+    rules:
+      # TODO: job:http_server_requests:rate5m (lab 05, paso 2)
+      - record: job:http_server_requests:rate5m
+        expr: vector(0)
+
+  # TODO: grupo tienda_negocio (lab 05, paso 6)

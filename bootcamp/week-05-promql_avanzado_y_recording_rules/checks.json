@@ -1,0 +1,140 @@
+{
+  "semana": "05",
+  "titulo": "PromQL avanzado y recording rules",
+  "perfil": "metrics",
+  "checks": [
+    {
+      "id": "entrega-arranca",
+      "descripcion": "La tienda de la entrega arranca con el perfil metrics, Prometheus carga su configuración y registra tráfico, también cobros fallidos (el autograding los provoca durante 30 s)",
+      "cmd": "TIENDA={proyecto} ./scripts/lab-up.sh metrics >/dev/null 2>&1 || { echo 'lab-up.sh falla'; exit 1; }; curl -s -X POST 127.0.0.1:9090/-/reload; prev=$(curl -s 127.0.0.1:18003/admin/faults); curl -s -X PUT 127.0.0.1:18003/admin/faults -H 'Content-Type: application/json' -d '{\"error_rate\":0.5,\"latency_ms\":80,\"jitter_ms\":40,\"timeout_rate\":0}' >/dev/null; sleep 30; curl -s -X PUT 127.0.0.1:18003/admin/faults -H 'Content-Type: application/json' -d \"$prev\" >/dev/null; sleep 30; ./scripts/promql.sh 'sum(increase(payment_failures_total[2m])) > 0'",
+      "assert": "stdout~^\\{\\} [0-9]",
+      "pista": "3-proyecto/README.md, punto de partida"
+    },
+    {
+      "id": "config-valida",
+      "descripcion": "promtool da por válidas la configuración de Prometheus y sus recording rules",
+      "cmd": "docker run --rm -u \"$(id -u)\" -v {raiz}/{proyecto}/prometheus:/w -w /w --entrypoint sh prom/prometheus:v3.15.1 -c 'promtool check config prometheus.yml'",
+      "assert": "stdout~rules found",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 3"
+    },
+    {
+      "id": "reglas-cargadas",
+      "descripcion": "Prometheus ha cargado al menos 8 recording rules y todas se evalúan sin error",
+      "cmd": "curl -s 127.0.0.1:9090/api/v1/rules | jq -r '[.data.groups[].rules[] | select(.type==\"recording\")] | if length >= 8 and all(.health==\"ok\") then \"ok\" else \"\\(length) reglas, \\(map(select(.health!=\"ok\")) | length) con error\" end'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 3"
+    },
+    {
+      "id": "nombres",
+      "descripcion": "Todas las recording rules siguen la convención level:metric:operations",
+      "cmd": "curl -s 127.0.0.1:9090/api/v1/rules | jq -r '[.data.groups[].rules[] | select(.type==\"recording\") | .name] | if length == 0 then \"sin reglas\" else (map(select(test(\"^[a-z_]+:[a-z0-9_]+:[a-z0-9_]+$\") | not)) | if length == 0 then \"ok\" else join(\" \") end) end'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 2"
+    },
+    {
+      "id": "regla-http-server-requests-rate5m",
+      "descripcion": "job:http_server_requests:rate5m se evalúa en Prometheus con los labels job",
+      "cmd": "./scripts/promql.sh 'job:http_server_requests:rate5m and timestamp(job:http_server_requests:rate5m) > time() - 60' | awk -v want='job' -v lo=0 -v hi=1000 -v need='job=\"catalogo\"' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 4"
+    },
+    {
+      "id": "regla-http-server-requests-errors-rate5m",
+      "descripcion": "job:http_server_requests_errors:rate5m se evalúa en Prometheus con los labels job",
+      "cmd": "./scripts/promql.sh 'job:http_server_requests_errors:rate5m and timestamp(job:http_server_requests_errors:rate5m) > time() - 60' | awk -v want='job' -v lo=0 -v hi=1000 -v need='job=\"pagos\"' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 4"
+    },
+    {
+      "id": "regla-http-server-requests-errors-ratio-rate5m",
+      "descripcion": "job:http_server_requests_errors:ratio_rate5m se evalúa en Prometheus con los labels job",
+      "cmd": "./scripts/promql.sh 'job:http_server_requests_errors:ratio_rate5m and timestamp(job:http_server_requests_errors:ratio_rate5m) > time() - 60' | awk -v want='job' -v lo=0 -v hi=1 -v need='job=\"pagos\"' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 4"
+    },
+    {
+      "id": "regla-http-server-request-duration-seconds-bucket-rate5m",
+      "descripcion": "job_route_le:http_server_request_duration_seconds_bucket:rate5m se evalúa en Prometheus con los labels job,le,route",
+      "cmd": "./scripts/promql.sh 'job_route_le:http_server_request_duration_seconds_bucket:rate5m and timestamp(job_route_le:http_server_request_duration_seconds_bucket:rate5m) > time() - 60' | awk -v want='job,le,route' -v lo=0 -v hi=1000 -v need='le=\"+Inf\"' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 5"
+    },
+    {
+      "id": "regla-http-server-request-duration-seconds-p95-rate5m",
+      "descripcion": "job_route:http_server_request_duration_seconds:p95_rate5m se evalúa en Prometheus con los labels job,route",
+      "cmd": "./scripts/promql.sh 'job_route:http_server_request_duration_seconds:p95_rate5m{job=\"pagos\", route=\"/charges\"} and timestamp(job_route:http_server_request_duration_seconds:p95_rate5m{job=\"pagos\", route=\"/charges\"}) > time() - 60' | awk -v want='job,route' -v lo=0 -v hi=60 -v need='' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 5"
+    },
+    {
+      "id": "regla-orders-created-rate5m",
+      "descripcion": "job:orders_created:rate5m se evalúa en Prometheus con los labels job",
+      "cmd": "./scripts/promql.sh 'job:orders_created:rate5m and timestamp(job:orders_created:rate5m) > time() - 60' | awk -v want='job' -v lo=0 -v hi=1000 -v need='job=\"pedidos\"' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 6"
+    },
+    {
+      "id": "regla-payment-failures-rate5m",
+      "descripcion": "job_reason:payment_failures:rate5m se evalúa en Prometheus con los labels job,reason",
+      "cmd": "./scripts/promql.sh 'job_reason:payment_failures:rate5m and timestamp(job_reason:payment_failures:rate5m) > time() - 60' | awk -v want='job,reason' -v lo=0 -v hi=1000 -v need='reason=\"pagos_status_503\"' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 6"
+    },
+    {
+      "id": "regla-catalog-cache-hits-ratio-rate5m",
+      "descripcion": "job:catalog_cache_hits:ratio_rate5m se evalúa en Prometheus con los labels job",
+      "cmd": "./scripts/promql.sh 'job:catalog_cache_hits:ratio_rate5m and timestamp(job:catalog_cache_hits:ratio_rate5m) > time() - 60' | awk -v want='job' -v lo=0 -v hi=1 -v need='job=\"catalogo\"' '{n++; k=$1; gsub(/=\"[^\"]*\"/,\"\",k); if (k!=want) bad=\"labels \" k; else if ($2 !~ /^-?[0-9.]+(e[-+]?[0-9]+)?$/ || $2+0<lo || $2+0>hi) bad=\"valor \" $2; if (need!=\"\" && index($0, need)) found=1} END {if (n==0) bad=\"sin series\"; else if (need!=\"\" && !found) bad=\"falta \" need; print (bad ? bad : \"ok\")}'",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 6"
+    },
+    {
+      "id": "regla-equivalente",
+      "descripcion": "job:http_server_requests:rate5m da lo mismo (±10 %) que la consulta en crudo que sustituye",
+      "cmd": "./scripts/promql.sh 'abs(job:http_server_requests:rate5m{job=\"catalogo\"} - sum by (job) (rate(http_server_request_duration_seconds_count{job=\"catalogo\"}[5m]))) / sum by (job) (rate(http_server_request_duration_seconds_count{job=\"catalogo\"}[5m])) < 0.1 and timestamp(job:http_server_requests:rate5m{job=\"catalogo\"}) > time() - 60'",
+      "assert": "stdout~^job=\"catalogo\" ",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 4"
+    },
+    {
+      "id": "p95-desde-buckets",
+      "descripcion": "El percentil 95 se calcula sobre la recording rule de los buckets, no sobre los datos en crudo",
+      "cmd": "curl -s 127.0.0.1:9090/api/v1/rules | jq -r '.data.groups[].rules[] | select(.name==\"job_route:http_server_request_duration_seconds:p95_rate5m\") | .query'",
+      "assert": "stdout~job_route_le:http_server_request_duration_seconds_bucket:rate5m",
+      "pista": "2-practicas/lab-05-recording-rules/README.md, paso 5"
+    },
+    {
+      "id": "tests-pasan",
+      "descripcion": "Los tests unitarios de tests/ pasan con promtool test rules",
+      "cmd": "docker run --rm -u \"$(id -u)\" -v {raiz}/{proyecto}/prometheus:/w -w /w --entrypoint sh prom/prometheus:v3.15.1 -c 'promtool test rules tests/*.yml'",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-06-tests-con-promtool/README.md, paso 2"
+    },
+    {
+      "id": "tests-cubren",
+      "descripcion": "Cada recording rule de rules/ aparece en algún test de tests/",
+      "cmd": "cd {proyecto}/prometheus && n=0; falta=''; for r in $(grep -ho 'record: *[^ ]*' rules/*.yml | awk '{print $2}'); do n=$((n+1)); grep -qF \"$r\" tests/*.yml || falta=\"$falta $r\"; done; if [ $n -lt 8 ]; then echo \"$n reglas\"; elif [ -n \"$falta\" ]; then echo \"sin test:$falta\"; else echo ok; fi",
+      "assert": "stdout~^ok$",
+      "pista": "2-practicas/lab-06-tests-con-promtool/README.md, paso 6"
+    },
+    {
+      "id": "tests-detectan-4xx",
+      "descripcion": "Los tests fallan si la regla de errores cuenta también los 4xx",
+      "cmd": "t=$(mktemp -d); cp -r {proyecto}/prometheus/. \"$t\"; docker run --rm -u \"$(id -u)\" -v $t:/w -w /w --entrypoint sh prom/prometheus:v3.15.1 -c 'promtool test rules tests/*.yml' >/dev/null 2>&1 || { echo 'los tests no pasan'; rm -rf \"$t\"; exit 0; }; sed -i 's/5\\.\\./[45]../' \"$t\"/rules/*.yml; docker run --rm -u \"$(id -u)\" -v $t:/w -w /w --entrypoint sh prom/prometheus:v3.15.1 -c 'promtool test rules tests/*.yml' >/dev/null 2>&1 && echo 'no lo detectan' || echo detectan; rm -rf \"$t\"",
+      "assert": "stdout~^detectan$",
+      "pista": "2-practicas/lab-06-tests-con-promtool/README.md, paso 4"
+    },
+    {
+      "id": "tests-detectan-reinicio",
+      "descripcion": "Los tests fallan si job:orders_created:rate5m usa deriv en lugar de rate: cubren un reinicio de pedidos",
+      "cmd": "t=$(mktemp -d); cp -r {proyecto}/prometheus/. \"$t\"; docker run --rm -u \"$(id -u)\" -v $t:/w -w /w --entrypoint sh prom/prometheus:v3.15.1 -c 'promtool test rules tests/*.yml' >/dev/null 2>&1 || { echo 'los tests no pasan'; rm -rf \"$t\"; exit 0; }; sed -i 's/rate(orders_created_total/deriv(orders_created_total/' \"$t\"/rules/*.yml; docker run --rm -u \"$(id -u)\" -v $t:/w -w /w --entrypoint sh prom/prometheus:v3.15.1 -c 'promtool test rules tests/*.yml' >/dev/null 2>&1 && echo 'no lo detectan' || echo detectan; rm -rf \"$t\"",
+      "assert": "stdout~^detectan$",
+      "pista": "2-practicas/lab-06-tests-con-promtool/README.md, paso 5"
+    },
+    {
+      "id": "native-histograms",
+      "descripcion": "Prometheus ingiere como native histogram su propio prometheus_http_request_duration_seconds",
+      "cmd": "./scripts/promql.sh 'count(prometheus_http_request_duration_seconds{job=\"prometheus\"} and timestamp(prometheus_http_request_duration_seconds{job=\"prometheus\"}) > time() - 60)'",
+      "assert": "stdout~^\\{\\} [1-9]",
+      "pista": "2-practicas/lab-04-native-histograms-y-tsdb/README.md, paso 2"
+    }
+  ]
+}

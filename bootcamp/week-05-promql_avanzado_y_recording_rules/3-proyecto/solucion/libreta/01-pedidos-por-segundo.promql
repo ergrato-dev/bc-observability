@@ -1,0 +1,4 @@
+# ¿Cuántos pedidos por segundo entran?
+# Devuelve: un valor sin labels, en pedidos por segundo, con una ventana de 5m.
+
+sum(rate(http_server_request_duration_seconds_count{job="pedidos", method="POST", route="/orders"}[5m]))
