@@ -114,7 +114,7 @@ Cada backend tiene una API HTTP, así que casi todo es verificable con `curl` + 
 ```json
 { "id": "logs-json",
   "descripcion": "pedidos escribe sus logs en JSON con request_id",
-  "cmd": "docker compose -f app/compose.yaml logs --no-log-prefix --tail 20 pedidos | jq -e 'select(.request_id)' >/dev/null",
+  "cmd": "docker compose -f app/compose.yaml logs --no-log-prefix --tail 20 pedidos | jq -e -n 'any(inputs; has(\"request_id\"))' >/dev/null",
   "assert": "exit0",
   "pista": "2-practicas/lab-02-structlog/README.md, paso 5" }
 ```

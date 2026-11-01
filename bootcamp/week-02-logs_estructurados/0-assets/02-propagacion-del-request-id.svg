@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">El request_id de un pedido por los cuatro servicios</title>
+  <desc id="d">El cliente llama a pedidos. pedidos toma el X-Request-ID que llega o genera uno y lo enlaza al contexto. Lo envía como cabecera en las llamadas HTTP a catalogo y a pagos, y como cabecera x-request-id del mensaje order.created en RabbitMQ, de donde lo lee notificaciones con un logger hijo. Al final, una búsqueda por ese identificador devuelve las líneas de los cuatro servicios.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="960" height="600" fill="#0d1117"/>
+  <rect width="5" height="600" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">El request_id de un pedido por los cuatro servicios</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">Cada salto lleva el mismo request_id: así se unen las líneas de los cuatro servicios.</text>
+  <rect x="22" y="82" width="136" height="40" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="90.0" y="107.0" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="middle">cliente</text>
+  <line x1="90" y1="122" x2="90" y2="430" stroke="#30363d" stroke-width="2" stroke-dasharray="4 4"/>
+  <rect x="182" y="82" width="136" height="40" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="250.0" y="107.0" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="middle">pedidos</text>
+  <line x1="250" y1="122" x2="250" y2="430" stroke="#30363d" stroke-width="2" stroke-dasharray="4 4"/>
+  <rect x="352" y="82" width="136" height="40" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="420.0" y="107.0" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="middle">catalogo</text>
+  <line x1="420" y1="122" x2="420" y2="430" stroke="#30363d" stroke-width="2" stroke-dasharray="4 4"/>
+  <rect x="512" y="82" width="136" height="40" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="580.0" y="107.0" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="middle">pagos</text>
+  <line x1="580" y1="122" x2="580" y2="430" stroke="#30363d" stroke-width="2" stroke-dasharray="4 4"/>
+  <rect x="667" y="82" width="136" height="40" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="735.0" y="107.0" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="middle">RabbitMQ</text>
+  <line x1="735" y1="122" x2="735" y2="430" stroke="#30363d" stroke-width="2" stroke-dasharray="4 4"/>
+  <rect x="817" y="82" width="136" height="40" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="885.0" y="107.0" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="middle">notificaciones</text>
+  <line x1="885" y1="122" x2="885" y2="430" stroke="#30363d" stroke-width="2" stroke-dasharray="4 4"/>
+  <polyline points="90,160 248,160" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="170.0" y="152" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="middle">POST /orders</text>
+  <rect x="170" y="174" width="160" height="40" rx="6" fill="#161b22" stroke="#F5A800"/>
+  <text x="250" y="190" fill="#F5A800" font-size="11" font-weight="400" text-anchor="middle">X-Request-ID o uuid4()</text>
+  <text x="250" y="205" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">bind_contextvars</text>
+  <polyline points="250,236 418,236" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="335.0" y="228" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="middle">GET precio</text>
+  <polyline points="250,270 418,270" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="335.0" y="262" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="middle">POST reserva</text>
+  <polyline points="250,304 578,304" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="530.0" y="296" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="middle">POST /charges</text>
+  <text x="335.0" y="322" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">cabecera X-Request-ID</text>
+  <polyline points="250,352 733,352" fill="none" stroke="#d2a8ff" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#a-purple)"/>
+  <text x="560.0" y="344" fill="#d2a8ff" font-size="12" font-weight="400" text-anchor="middle">order.created</text>
+  <text x="560.0" y="370" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">cabecera x-request-id del mensaje</text>
+  <polyline points="735,396 883,396" fill="none" stroke="#d2a8ff" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#a-purple)"/>
+  <rect x="815" y="404" width="140" height="22" rx="6" fill="#161b22" stroke="#F5A800"/>
+  <text x="885" y="419" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">logger.child(...)</text>
+  <rect x="30" y="450" width="900" height="132" rx="7" fill="#0d1117" stroke="#30363d"/>
+  <text x="46" y="474" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">seguir.sh 7be7316f</text>
+  <text x="46" y="498" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">10:15:02</text>
+  <text x="130" y="498" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">catalogo</text>
+  <text x="270" y="498" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">http_request</text>
+  <text x="430" y="498" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">/products/{product_id}</text>
+  <text x="914" y="498" fill="#3fb950" font-size="12" font-weight="400" text-anchor="end" font-family="'JetBrains Mono', 'Courier New', monospace">request_id=&quot;7be7316f&quot;</text>
+  <text x="46" y="520" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">10:15:02</text>
+  <text x="130" y="520" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">pagos</text>
+  <text x="270" y="520" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">charge_approved</text>
+  <text x="430" y="520" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">amount=7.59</text>
+  <text x="914" y="520" fill="#3fb950" font-size="12" font-weight="400" text-anchor="end" font-family="'JetBrains Mono', 'Courier New', monospace">request_id=&quot;7be7316f&quot;</text>
+  <text x="46" y="542" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">10:15:02</text>
+  <text x="130" y="542" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">pedidos</text>
+  <text x="270" y="542" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">order_created</text>
+  <text x="430" y="542" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">order_id=3312</text>
+  <text x="914" y="542" fill="#3fb950" font-size="12" font-weight="400" text-anchor="end" font-family="'JetBrains Mono', 'Courier New', monospace">request_id=&quot;7be7316f&quot;</text>
+  <text x="46" y="564" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">10:15:02</text>
+  <text x="130" y="564" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">notificaciones</text>
+  <text x="270" y="564" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">email_sent</text>
+  <text x="430" y="564" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">order_id=3312</text>
+  <text x="914" y="564" fill="#3fb950" font-size="12" font-weight="400" text-anchor="end" font-family="'JetBrains Mono', 'Courier New', monospace">request_id=&quot;7be7316f&quot;</text>
+</svg>

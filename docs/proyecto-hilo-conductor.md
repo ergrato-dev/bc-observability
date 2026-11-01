@@ -4,6 +4,17 @@ Un solo proyecto atraviesa las 22 semanas: una tienda online pequeña hecha de m
 
 `web` y `asistente` no existen todavía: se añaden a `app/` en la semana que los usa (16 y 20).
 
+## Tu copia de la tienda
+
+`app/` es siempre la tienda sin instrumentar. Desde la semana 02, cada semana que cambia código trae su propia copia en `3-proyecto/starter/`: la solución de referencia de la semana anterior, con las dependencias nuevas ya en sus lockfiles. Así todos empiezan cada semana desde el mismo punto, aunque la anterior no te quedara perfecta.
+
+```bash
+export TIENDA=bootcamp/week-02-logs_estructurados/3-proyecto/starter
+./scripts/lab-up.sh        # construye catalogo, pedidos, pagos y notificaciones desde $TIENDA
+```
+
+Sin `TIENDA`, `lab-up.sh` vuelve a construir `app/`. Tus cambios no se pierden (siguen en tu carpeta), pero dejan de estar en marcha.
+
 ## Componentes
 
 | Servicio | Tecnología | Qué hace | Por qué está |

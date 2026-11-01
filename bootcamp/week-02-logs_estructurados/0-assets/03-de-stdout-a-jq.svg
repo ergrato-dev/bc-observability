@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">De stdout a jq</title>
+  <desc id="d">El servicio escribe en stdout. Docker lo recoge con el driver json-file y lo guarda en un archivo del host, que solo rota si se configuran max-size y max-file. docker compose logs lee ese archivo y jq lo consulta. En la semana 08, Fluent Bit leerá los mismos archivos para enviarlos a Loki.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="960" height="470" fill="#0d1117"/>
+  <rect width="5" height="470" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">De stdout a jq</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">El servicio solo escribe en stdout. Guardar, rotar y enviar los logs es cosa de la plataforma.</text>
+  <rect x="30" y="110" width="170" height="64" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="115.0" y="140.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">servicio</text>
+  <text x="115.0" y="157.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">escribe en stdout</text>
+  <polyline points="200,142 258,142" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="229" y="134" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">stdout</text>
+  <rect x="260" y="110" width="200" height="64" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="360.0" y="140.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">Docker</text>
+  <text x="360.0" y="157.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">driver json-file</text>
+  <polyline points="460,142 518,142" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <rect x="520" y="96" width="290" height="92" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="665" y="120" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">archivo en el host</text>
+  <text x="665" y="140" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">/var/lib/docker/containers/&lt;id&gt;/…-json.log</text>
+  <rect x="580" y="152" width="170" height="24" rx="12" fill="none" stroke="#3fb950"/>
+  <text x="665" y="169" fill="#3fb950" font-size="11" font-weight="400" text-anchor="middle">max-size 10m · max-file 3</text>
+  <polyline points="665,188 665,258" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <rect x="560" y="260" width="210" height="64" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="665.0" y="290.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">docker compose logs</text>
+  <text x="665.0" y="307.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">--since 5m --no-log-prefix</text>
+  <polyline points="560,292 462,292" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <rect x="260" y="260" width="200" height="64" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
+  <text x="360.0" y="290.0" fill="#3fb950" font-size="15" font-weight="600" text-anchor="middle">jq</text>
+  <text x="360.0" y="307.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">esta semana: tú</text>
+  <polyline points="810,142 870,142 870,360" fill="none" stroke="#d2a8ff" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#a-purple)"/>
+  <rect x="790" y="362" width="160" height="64" rx="7" fill="none" stroke="#d2a8ff" stroke-dasharray="6 4"/>
+  <text x="870" y="388" fill="#d2a8ff" font-size="14" font-weight="600" text-anchor="middle">Fluent Bit → Loki</text>
+  <text x="870" y="408" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">semana 08</text>
+  <text x="30" y="400" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="start">Sin max-size, el archivo crece hasta llenar el disco del host.</text>
+  <text x="30" y="422" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">jq sobre docker compose logs sirve para una máquina y unos minutos;</text>
+  <text x="30" y="442" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">para muchos servicios y semanas de historia hace falta un backend de logs.</text>
+</svg>

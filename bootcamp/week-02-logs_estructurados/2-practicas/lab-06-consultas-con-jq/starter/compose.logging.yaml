@@ -1,0 +1,19 @@
+# Rotación de los logs de los contenedores de la tienda.
+# Uso: docker compose -f app/compose.yaml -f <este archivo> up -d --no-build
+#
+# Sin esto, el driver json-file de Docker guarda los logs de cada contenedor en
+# un único archivo que crece sin límite.
+
+x-logging: &logging
+  # TODO (paso 6): driver json-file, archivos de 10 MB como máximo y 3 archivos.
+  driver: json-file
+
+services:
+  catalogo:
+    logging: *logging
+  pedidos:
+    logging: *logging
+  pagos:
+    logging: *logging
+  notificaciones:
+    logging: *logging

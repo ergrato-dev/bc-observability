@@ -163,6 +163,7 @@ Plantillas de cada archivo: [`bootcamp/PLANTILLA-SEMANA.md`](bootcamp/PLANTILLA-
 - Puertos en el host: `catalogo` 18001, `pedidos` 18002, `pagos` 18003, `notificaciones` 18004, RabbitMQ 15672, toxiproxy 8474. Los backends de observabilidad que añada cada semana usan sus puertos estándar (Prometheus 9090, Grafana 3000, etc.), siempre en `127.0.0.1`.
 - Averías latentes que el alumno descubre (no se anuncian en el código): consulta N+1 de categorías en `GET /products`, búsqueda `?q=` que puntúa en Python todo el catálogo (el hot path de la S14; su coste se ajusta al escribir esa semana), y datos personales en los logs de `pedidos` y `notificaciones` (marcados como antipatrón, se corrigen en la S02).
 - `./app/scripts/smoke-test.sh` tiene que pasar después de cualquier cambio en `app/`.
+- `app/` es siempre la tienda **sin instrumentar**. Las semanas que cambian código traen su propia copia de los servicios en `3-proyecto/starter/` (la `solucion/` de la semana anterior, o `app/` si es la primera), con la misma estructura que `app/`: `Dockerfile.python`, `catalogo/`, `pedidos/`, `pagos/`, `notificaciones/`. Las dependencias nuevas de la semana ya van en sus lockfiles. `TIENDA=<carpeta> ./scripts/lab-up.sh` la construye; el primer check de `checks.json` lo hace con `TIENDA={proyecto}`.
 
 ## Estándares de código
 
@@ -246,7 +247,7 @@ Mínimo 3 diagramas **SVG** (`NN-nombre.svg`, en orden de lectura), cada uno inc
 Solo enlaces comprobados al escribir la semana; nada inventado.
 
 ### 5-glosario/
-`| Término | Definición en una línea | Ejemplo |`, 8–15 términos nuevos de esa semana.
+8–15 términos nuevos de esa semana, **en orden alfabético y agrupados por letra**: un índice de letras al principio (`[A](#a) · [C](#c) …`) y una sección `## A`, `## C`… por cada letra con términos, cada una con su tabla `| Término | Definición en una línea | Ejemplo |`. El orden ignora tildes y mayúsculas.
 
 ---
 

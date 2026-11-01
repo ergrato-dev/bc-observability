@@ -5,6 +5,10 @@
 #   ./scripts/lab-up.sh            la tienda (perfil core)
 #   ./scripts/lab-up.sh metrics    tienda + métricas
 #
+#   TIENDA=<carpeta> construye la tienda desde esa carpeta en lugar de app/.
+#   Desde la semana 02 apunta al proyecto de la semana, por ejemplo:
+#   TIENDA=bootcamp/week-02-logs_estructurados/3-proyecto/starter ./scripts/lab-up.sh
+#
 # Perfiles, qué incluye cada uno y RAM: docs/perfiles-de-laboratorio.md
 # Idempotente: si algo ya corre, lo deja como está (o lo recrea si cambió).
 
@@ -28,6 +32,12 @@ case "$perfil" in
     ;;
 esac
 
+# compose.yaml construye los servicios desde ${TIENDA_SRC:-.} (relativo a app/).
+if [[ -n "${TIENDA:-}" ]]; then
+  TIENDA_SRC="$(cd "$TIENDA" && pwd)"
+  export TIENDA_SRC
+fi
+
 args=()
 for p in "${perfiles[@]}"; do args+=(--profile "$p"); done
 
@@ -35,4 +45,4 @@ for p in "${perfiles[@]}"; do args+=(--profile "$p"); done
 docker compose -f "$RAIZ/app/compose.yaml" "${args[@]}" up -d --build --wait
 docker compose -f "$RAIZ/app/compose.yaml" "${args[@]}" ps --format 'table {{.Service}}\t{{.Status}}\t{{.Ports}}'
 echo
-echo "Laboratorio listo: perfil $perfil"
+echo "Laboratorio listo: perfil $perfil, tienda de ${TIENDA_SRC:-$RAIZ/app}"
