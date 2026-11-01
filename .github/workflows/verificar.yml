@@ -21,5 +21,23 @@ jobs:
       - name: shellcheck de scripts/
         run: shellcheck -S warning scripts/*.sh
 
-      # El autograding de las soluciones necesita el laboratorio levantado
-      # (Prometheus, Loki, Jaeger...). Se añade aquí cuando exista app/compose.yaml.
+      - name: shellcheck de app/scripts/
+        run: shellcheck -S warning app/scripts/*.sh
+
+  tienda:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Levantar la tienda (perfil core)
+        run: ./scripts/lab-up.sh
+
+      - name: Smoke test de punta a punta
+        run: ./app/scripts/smoke-test.sh
+
+      - name: Logs si algo falló
+        if: failure()
+        run: docker compose -f app/compose.yaml logs --tail 50
+
+      # El autograding de las soluciones de cada semana se añade aquí cuando
+      # exista la primera semana publicada.

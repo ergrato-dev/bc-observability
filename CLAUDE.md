@@ -36,11 +36,12 @@ Guía de autoría del bootcamp. Es la **fuente única de verdad** de cómo se es
 2. **Solo open source ampliamente reconocido**: proyectos CNCF, OpenTelemetry, Prometheus, Grafana OSS y equivalentes con licencia aprobada por OSI. Nada SaaS, nada propietario, nada con licencias no OSI (ELv2, BSL, SSPL). Si una herramienta tiene edición comunitaria y comercial, se usa solo la comunitaria y se dice.
 3. **Python = FastAPI + uv.** `pyproject.toml` + `uv.lock` comiteado, `uv sync --locked`, `uv run`. Nunca `pip`, nunca `requirements.txt`, nunca `venv` a mano. En Docker: `COPY --from=ghcr.io/astral-sh/uv:<versión fijada>`.
 4. **Node.js = pnpm.** `pnpm-lock.yaml` comiteado, `pnpm install --frozen-lockfile`. Nunca `npm`, nunca `package-lock.json`, nunca `npx` (usa `pnpm dlx` o `pnpm exec`).
-5. **Imágenes con tag fijado.** Nunca `latest` ni sin tag. Versiones solo de [`docs/stack-versions.md`](docs/stack-versions.md); una versión entra ahí verificada (fecha y fuente) en la tanda que escribe la semana que la usa.
-6. **Puertos solo en `127.0.0.1`.** Ningún `compose.yaml` publica un backend en `0.0.0.0`.
-7. **La telemetría no lleva datos personales ni secretos.** Todo ejemplo que muestre PII la redacta o la marca como antipatrón.
-8. **Ningún dato de telemetría sale a un LLM externo.** La IA del bootcamp corre en local con Ollama y modelos open-weight.
-9. **Sin herramientas deprecadas.** Promtail (EOL), Jaeger v1, OpenTracing, OpenCensus y `docker-compose` v1 no aparecen salvo como nota histórica.
+5. **Base de datos = PostgreSQL.** Toda persistencia relacional usa PostgreSQL (imagen oficial). Valkey solo como caché, RabbitMQ solo como cola.
+6. **Imágenes con tag fijado.** Nunca `latest` ni sin tag. Versiones solo de [`docs/stack-versions.md`](docs/stack-versions.md); una versión entra ahí verificada (fecha y fuente) en la tanda que escribe la semana que la usa.
+7. **Puertos solo en `127.0.0.1`.** Ningún `compose.yaml` publica un backend en `0.0.0.0`.
+8. **La telemetría no lleva datos personales ni secretos.** Todo ejemplo que muestre PII la redacta o la marca como antipatrón.
+9. **Ningún dato de telemetría sale a un LLM externo.** La IA del bootcamp corre en local con Ollama y modelos open-weight.
+10. **Sin herramientas deprecadas.** Promtail (EOL), Jaeger v1, OpenTracing, OpenCensus y `docker-compose` v1 no aparecen salvo como nota histórica.
 
 ## Filosofía de contenido: 100% práctica
 
@@ -157,6 +158,12 @@ Plantillas de cada archivo: [`bootcamp/PLANTILLA-SEMANA.md`](bootcamp/PLANTILLA-
 | Labels de Loki | pocos y de baja cardinalidad | `service_name`, `level` |
 | Recording rules | `level:metric:operations` | `job:http_requests:rate5m` |
 
+## La tienda (`app/`)
+
+- Puertos en el host: `catalogo` 18001, `pedidos` 18002, `pagos` 18003, `notificaciones` 18004, RabbitMQ 15672, toxiproxy 8474. Los backends de observabilidad que añada cada semana usan sus puertos estándar (Prometheus 9090, Grafana 3000, etc.), siempre en `127.0.0.1`.
+- Averías latentes que el alumno descubre (no se anuncian en el código): consulta N+1 de categorías en `GET /products`, búsqueda `?q=` que puntúa en Python todo el catálogo (el hot path de la S14; su coste se ajusta al escribir esa semana), y datos personales en los logs de `pedidos` y `notificaciones` (marcados como antipatrón, se corrigen en la S02).
+- `./app/scripts/smoke-test.sh` tiene que pasar después de cualquier cambio en `app/`.
+
 ## Estándares de código
 
 - **Python:** FastAPI, Python fijado en `stack-versions.md`, `pyproject.toml` + `uv.lock`, ruff para lint y formato, pytest. Logs con `structlog`; métricas con `prometheus-client` (S03-08) y luego OpenTelemetry SDK.
@@ -180,7 +187,7 @@ Plantillas de cada archivo: [`bootcamp/PLANTILLA-SEMANA.md`](bootcamp/PLANTILLA-
 3. **Contexto** — máx. 3 párrafos o bullets; no repetir lo que ya está en 1-teoria
 4. **Instrucciones** — pasos numerados, con comandos exactos y salida esperada
 5. **Criterios de éxito** — verificables con una consulta o un comando (`curl -s localhost:9090/api/v1/query ...` devuelve X)
-6. **Reto extra** (opcional)
+7. **Reto extra** (opcional)
 
 ## Estructura del README.md de semana
 

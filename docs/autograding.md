@@ -42,7 +42,7 @@ Un archivo por semana, en la raíz de la carpeta de la semana.
     {
       "id": "catalogo-metrics",
       "descripcion": "catalogo expone /metrics en formato Prometheus",
-      "cmd": "curl -sf http://127.0.0.1:8001/metrics",
+      "cmd": "curl -sf http://127.0.0.1:18001/metrics",
       "assert": "stdout~^# TYPE ",
       "pista": "2-practicas/lab-01-primer-metrics/README.md, paso 3"
     },

@@ -130,9 +130,12 @@ echo "== 8. Imagenes fijadas (sin tag o :latest) =="
 # Una referencia valida lleva ":<tag>" en su ultimo segmento o "@sha256:".
 while IFS= read -r f; do
   aplica "$f" || continue
+  # Etapas con nombre de un Dockerfile multi-stage ("FROM base"): no son imagenes.
+  etapas=$(grep -ioE '^FROM[[:space:]].*[[:space:]]AS[[:space:]]+[a-z0-9_.-]+' "$f" | awk '{print $NF}' || true)
   while IFS= read -r linea; do
     ref=$(sed -E 's/^[[:space:]-]*(image:|FROM)[[:space:]]*//; s/[[:space:]]+(AS|as)[[:space:]].*$//; s/[[:space:]]+#.*$//; s/["'\'']//g' <<<"$linea")
     case "$ref" in *'<'*|*'$'*|*'{{'*|scratch) continue ;; esac   # placeholders, plantillas
+    grep -qxF "$ref" <<<"$etapas" && continue
     ultimo="${ref##*/}"
     if { [[ "$ultimo" != *:* ]] && [[ "$ref" != *@sha256:* ]]; } || [[ "$ultimo" == *:latest ]]; then
       echo "IMAGEN SIN VERSION (sin tag o :latest): $f: $linea"; fail=1

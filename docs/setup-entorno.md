@@ -49,8 +49,8 @@ Solo si quieres autocompletado o ejecutar tests en el host. Python siempre con *
 uv --version
 uv python install 3.14
 
-# Node.js 26 LTS (con el gestor de versiones que prefieras) y pnpm vía corepack
-corepack enable pnpm
+# Node.js 26 LTS con el gestor de versiones que prefieras. Node.js 26 ya no
+# trae corepack: instala pnpm con su instalador oficial (https://pnpm.io/installation)
 pnpm --version
 ```
 

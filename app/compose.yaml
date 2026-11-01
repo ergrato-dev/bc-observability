@@ -1,0 +1,171 @@
+# Laboratorio del bootcamp. Úsalo con ./scripts/lab-up.sh <perfil>.
+#
+# Sin perfil: la tienda (perfil core). Cada semana añade los servicios de su
+# señal bajo su perfil (metrics, logs, traces, profiles, scale, ai): ver
+# docs/perfiles-de-laboratorio.md.
+#
+# Todos los puertos se publican solo en 127.0.0.1. Las contraseñas de este
+# archivo son del laboratorio: no salen de tu máquina.
+
+name: tienda
+
+x-python-service: &python-service
+  restart: unless-stopped
+  healthcheck:
+    test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+    interval: 10s
+    timeout: 3s
+    retries: 5
+    start_period: 10s
+
+services:
+  # ── Tienda ──────────────────────────────────────────────────────────────
+  catalogo:
+    <<: *python-service
+    build:
+      context: ./catalogo
+      dockerfile: ../Dockerfile.python
+    image: tienda/catalogo:1.0.0
+    environment:
+      # Pasa por toxiproxy para poder inyectar latencia en la base de datos.
+      DATABASE_URL: postgresql://tienda:tienda@toxiproxy:5433/tienda
+      VALKEY_URL: redis://valkey:6379/0
+    ports:
+      - "127.0.0.1:18001:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+      toxiproxy:
+        condition: service_started
+
+  pedidos:
+    <<: *python-service
+    build:
+      context: ./pedidos
+      dockerfile: ../Dockerfile.python
+    image: tienda/pedidos:1.0.0
+    environment:
+      DATABASE_URL: postgresql://tienda:tienda@postgres:5432/tienda
+      RABBITMQ_URL: amqp://tienda:tienda@rabbitmq:5672/
+      CATALOGO_URL: http://catalogo:8000
+      # Pasa por toxiproxy para poder inyectar latencia o cortes de red.
+      PAGOS_URL: http://toxiproxy:8666
+      PAGOS_TIMEOUT_SECONDS: "2"
+    ports:
+      - "127.0.0.1:18002:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      catalogo:
+        condition: service_healthy
+      pagos:
+        condition: service_healthy
+
+  pagos:
+    <<: *python-service
+    build:
+      context: ./pagos
+      dockerfile: ../Dockerfile.python
+    image: tienda/pagos:1.0.0
+    environment:
+      PAGOS_ERROR_RATE: "0.02"
+      PAGOS_LATENCY_MS: "80"
+      PAGOS_JITTER_MS: "40"
+      PAGOS_TIMEOUT_RATE: "0"
+    ports:
+      - "127.0.0.1:18003:8000"
+
+  notificaciones:
+    build: ./notificaciones
+    image: tienda/notificaciones:1.0.0
+    restart: unless-stopped
+    environment:
+      RABBITMQ_URL: amqp://tienda:tienda@rabbitmq:5672/
+      NOTIFICACIONES_DELAY_MS: "50"
+    ports:
+      - "127.0.0.1:18004:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  # ── Dependencias ────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:18.6-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tienda
+      POSTGRES_USER: tienda
+      POSTGRES_PASSWORD: tienda
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "tienda", "-d", "tienda"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  valkey:
+    image: valkey/valkey:9.1.3-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:4.3.7-management-alpine
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: tienda
+      RABBITMQ_DEFAULT_PASS: tienda
+    ports:
+      - "127.0.0.1:15672:15672"   # consola de gestión
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # ── Averías y tráfico ───────────────────────────────────────────────────
+  toxiproxy:
+    image: ghcr.io/shopify/toxiproxy:2.13.0
+    restart: unless-stopped
+    command: ["-host=0.0.0.0", "-config=/config/toxiproxy.json"]
+    volumes:
+      - ./toxiproxy/toxiproxy.json:/config/toxiproxy.json:ro
+    ports:
+      - "127.0.0.1:8474:8474"     # API de toxiproxy
+
+  trafico:
+    image: grafana/k6:1.8.2
+    restart: unless-stopped
+    command: ["run", "--quiet", "--summary-mode=disabled", "/scripts/compra.js"]
+    environment:
+      RATE: "2"
+      DURATION: "24h"
+    volumes:
+      - ./k6:/scripts:ro
+    depends_on:
+      catalogo:
+        condition: service_healthy
+      pedidos:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
+  rabbitmq-data:

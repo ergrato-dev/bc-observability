@@ -1,12 +1,14 @@
 # 🛒 Proyecto hilo conductor: `tienda`
 
-Un solo proyecto atraviesa las 22 semanas: una tienda online pequeña hecha de microservicios. Vive en `app/` y se entrega **sin instrumentar**: no emite logs útiles, no tiene `/metrics` y no propaga contexto. Cada semana le añades una capa de observabilidad y la siguiente parte de ella.
+Un solo proyecto atraviesa las 22 semanas: una tienda online pequeña hecha de microservicios. Vive en [`app/`](../app/README.md) y se entrega **sin instrumentar**: no emite logs útiles, no tiene `/metrics` y no propaga contexto. Cada semana le añades una capa de observabilidad y la siguiente parte de ella.
+
+`web` y `asistente` no existen todavía: se añaden a `app/` en la semana que los usa (16 y 20).
 
 ## Componentes
 
 | Servicio | Tecnología | Qué hace | Por qué está |
 |---|---|---|---|
-| `catalogo` | FastAPI + uv | Productos y stock, con caché en Valkey | Consultas a base de datos, caché, el N+1 de la S16 y el hot path de la S14 |
+| `catalogo` | FastAPI + uv | Productos, búsqueda y stock, con caché en Valkey | Consultas a base de datos, caché, el N+1 de la S16 y el hot path de la S14 |
 | `pedidos` | FastAPI + uv | Orquesta el checkout: consulta `catalogo`, cobra en `pagos`, publica un evento | Llamadas encadenadas: la traza distribuida de las S09-10 |
 | `pagos` | FastAPI + uv | Simula una pasarela de pago | Averías configurables por variables de entorno: latencia, tasa de error, timeouts |
 | `notificaciones` | Node.js + Express + pnpm | Consume eventos de RabbitMQ y "envía" correos | Segundo lenguaje y propagación de contexto asíncrona |

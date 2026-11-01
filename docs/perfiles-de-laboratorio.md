@@ -9,7 +9,7 @@ Todo el laboratorio corre en Docker Compose desde `app/compose.yaml`, salvo la S
 
 | Perfil | Qué levanta | Incluye | Semanas | RAM aprox. |
 |---|---|---|:--:|:--:|
-| `core` | tienda (5 servicios), PostgreSQL, Valkey, RabbitMQ, k6, toxiproxy | — | 01-02 | ~2 GB |
+| `core` | tienda (4 servicios), PostgreSQL, Valkey, RabbitMQ, k6, toxiproxy | — | 01-02 | ~0,5 GB (medido el 2026-10-31) |
 | `metrics` | Prometheus, exporters, Grafana, Alertmanager | `core` | 03-07 | ~3 GB |
 | `logs` | Loki, Fluent Bit | `metrics` | 08 | ~4 GB |
 | `traces` | Jaeger, Collector, Tempo | `logs` | 09-13 | ~5-6 GB |
@@ -20,7 +20,7 @@ Todo el laboratorio corre en Docker Compose desde `app/compose.yaml`, salvo la S
 La Semana 18 no usa Compose: `./scripts/lab-down.sh` primero y después el clúster kind de la semana (~6-7 GB con kube-prometheus-stack, Loki y el Collector).
 
 > [!IMPORTANT]
-> Las cifras son estimaciones del diseño. Cada una se reemplaza por la medida real al escribir su semana.
+> Salvo `core`, las cifras son estimaciones del diseño. Cada una se reemplaza por la medida real al escribir su semana. Hasta entonces, el `compose.yaml` solo tiene los servicios de `core`: los demás perfiles se añaden en la semana que los usa.
 
 Mínimo para seguir el bootcamp completo: **8 GB asignados a Docker/WSL2, libres**; **12 GB** para las semanas 18 y 20 sin apagar nada más. En WSL2 la memoria se asigna en `%UserProfile%\.wslconfig` (`[wsl2]` → `memory=12GB`).
 

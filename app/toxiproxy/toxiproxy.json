@@ -1,0 +1,14 @@
+[
+  {
+    "name": "pagos",
+    "listen": "0.0.0.0:8666",
+    "upstream": "pagos:8000",
+    "enabled": true
+  },
+  {
+    "name": "postgres-catalogo",
+    "listen": "0.0.0.0:5433",
+    "upstream": "postgres:5432",
+    "enabled": true
+  }
+]
