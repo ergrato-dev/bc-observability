@@ -12,7 +12,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está p
 
 | Semana | Tema | Estado |
 |:--:|---|:--:|
-| 01 | Qué es observabilidad: señales, RED, USE y golden signals | ⬜ |
+| [01](week-01-que_es_observabilidad/README.md) | Qué es observabilidad: señales, RED, USE y golden signals | ✅ |
 | 02 | Logs estructurados con structlog y pino | ⬜ |
 | 03 | Métricas e instrumentación con Prometheus | ⬜ |
 | 04 | PromQL: fundamentos | ⬜ |
