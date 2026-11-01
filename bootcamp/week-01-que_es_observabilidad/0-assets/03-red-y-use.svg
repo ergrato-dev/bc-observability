@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 510" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">RED para servicios, USE para recursos</title>
+  <desc id="d">RED (Rate, Errors, Duration) se aplica a cada servicio de la tienda: catalogo, pedidos, pagos y notificaciones. USE (Utilization, Saturation, Errors) se aplica a cada recurso finito: PostgreSQL, Valkey, RabbitMQ y los contenedores. Las golden signals de Google son RED más la saturación de USE.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="960" height="510" fill="#0d1117"/>
+  <rect width="5" height="510" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">RED para servicios, USE para recursos</text>
+  <rect x="30" y="70" width="660" height="160" rx="10" fill="none" stroke="#F5A800" stroke-dasharray="6 4"/>
+  <text x="50" y="100" fill="#F5A800" font-size="16" font-weight="600" text-anchor="start">RED · Rate, Errors, Duration</text>
+  <text x="50" y="120" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">por servicio: lo que ve quien llama</text>
+  <rect x="30" y="320" width="660" height="160" rx="10" fill="none" stroke="#79c0ff" stroke-dasharray="6 4"/>
+  <text x="50" y="350" fill="#79c0ff" font-size="16" font-weight="600" text-anchor="start">USE · Utilization, Saturation, Errors</text>
+  <text x="50" y="370" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">por recurso finito: lo que hay debajo</text>
+  <polyline points="360,232 360,318" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <text x="374" y="270" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="start">el checkout va lento:</text>
+  <text x="374" y="288" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="start">¿qué recurso está saturado?</text>
+  <rect x="50" y="145" width="140" height="60" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="120.0" y="173.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">catalogo</text>
+  <text x="120.0" y="190.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">GET /products</text>
+  <rect x="210" y="145" width="140" height="60" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="280.0" y="173.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">pedidos</text>
+  <text x="280.0" y="190.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">POST /orders</text>
+  <rect x="370" y="145" width="140" height="60" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="440.0" y="173.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">pagos</text>
+  <text x="440.0" y="190.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">POST /charges</text>
+  <rect x="530" y="145" width="140" height="60" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="600.0" y="173.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">notificaciones</text>
+  <text x="600.0" y="190.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">eventos consumidos</text>
+  <rect x="50" y="395" width="140" height="60" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="120.0" y="423.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">PostgreSQL</text>
+  <text x="120.0" y="440.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">conexiones en uso</text>
+  <rect x="210" y="395" width="140" height="60" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="280.0" y="423.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">Valkey</text>
+  <text x="280.0" y="440.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">memoria, desalojos</text>
+  <rect x="370" y="395" width="140" height="60" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="440.0" y="423.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">RabbitMQ</text>
+  <text x="440.0" y="440.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">mensajes en espera</text>
+  <rect x="530" y="395" width="140" height="60" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="600.0" y="423.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">Contenedores</text>
+  <text x="600.0" y="440.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">CPU y memoria</text>
+  <rect x="720" y="70" width="210" height="410" rx="10" fill="#161b22" stroke="#30363d"/>
+  <text x="825" y="102" fill="#e6edf3" font-size="16" font-weight="600" text-anchor="middle">Golden signals</text>
+  <text x="825" y="122" fill="#8b949e" font-size="12" font-weight="400" text-anchor="middle">libro de SRE de Google</text>
+  <rect x="740" y="160" width="170" height="58" rx="7" fill="#0d1117" stroke="#F5A800"/>
+  <text x="825" y="185" fill="#F5A800" font-size="15" font-weight="600" text-anchor="middle">Latency</text>
+  <text x="825" y="204" fill="#8b949e" font-size="12" font-weight="400" text-anchor="middle">Duration de RED</text>
+  <rect x="740" y="238" width="170" height="58" rx="7" fill="#0d1117" stroke="#F5A800"/>
+  <text x="825" y="263" fill="#F5A800" font-size="15" font-weight="600" text-anchor="middle">Traffic</text>
+  <text x="825" y="282" fill="#8b949e" font-size="12" font-weight="400" text-anchor="middle">Rate de RED</text>
+  <rect x="740" y="316" width="170" height="58" rx="7" fill="#0d1117" stroke="#F5A800"/>
+  <text x="825" y="341" fill="#F5A800" font-size="15" font-weight="600" text-anchor="middle">Errors</text>
+  <text x="825" y="360" fill="#8b949e" font-size="12" font-weight="400" text-anchor="middle">Errors de RED</text>
+  <rect x="740" y="394" width="170" height="58" rx="7" fill="#0d1117" stroke="#79c0ff"/>
+  <text x="825" y="419" fill="#79c0ff" font-size="15" font-weight="600" text-anchor="middle">Saturation</text>
+  <text x="825" y="438" fill="#8b949e" font-size="12" font-weight="400" text-anchor="middle">Saturation de USE</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">Un síntoma aparece en RED; la causa suele estar en un recurso saturado de USE.</text>
+</svg>

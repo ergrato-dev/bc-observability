@@ -1,0 +1,98 @@
+{
+  "semana": "01",
+  "titulo": "Qué es observabilidad: señales, RED, USE y golden signals",
+  "perfil": "core",
+  "checks": [
+    {
+      "id": "tienda-healthy",
+      "descripcion": "Los cuatro servicios de la tienda están healthy",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml ps --format json catalogo pedidos pagos notificaciones | jq -s 'map(select(.Health==\"healthy\")) | length'",
+      "assert": "stdout~^4$",
+      "pista": "2-practicas/lab-01-levantar-la-tienda/README.md, paso 2"
+    },
+    {
+      "id": "trafico-pedidos",
+      "descripcion": "El tráfico de fondo ha creado pedidos en los últimos 5 minutos",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml exec -T postgres psql -U tienda -tAc \"SELECT count(*) > 0 FROM orders WHERE created_at > now() - interval '5 minutes'\"",
+      "assert": "stdout~^t$",
+      "pista": "2-practicas/lab-02-carga-con-k6/README.md, paso 1"
+    },
+    {
+      "id": "mapa-sin-todo",
+      "descripcion": "El mapa existe y no tiene TODO pendientes",
+      "cmd": "test -f {proyecto}/mapa-observabilidad.md && ! grep -q TODO {proyecto}/mapa-observabilidad.md",
+      "assert": "exit0",
+      "pista": "3-proyecto/README.md, entregable 1"
+    },
+    {
+      "id": "diagrama-mermaid",
+      "descripcion": "La sección Arquitectura contiene un diagrama mermaid",
+      "cmd": "awk '/^## Arquitectura/{f=1;next} /^## /{f=0} f' {proyecto}/mapa-observabilidad.md | grep -q '^```mermaid'",
+      "assert": "exit0",
+      "pista": "0-assets/01-arquitectura-tienda.md"
+    },
+    {
+      "id": "diagrama-piezas",
+      "descripcion": "El diagrama incluye los cuatro servicios y las tres dependencias",
+      "cmd": "b=$(awk '/^```mermaid/{f=1;next} /^```/{f=0} f' {proyecto}/mapa-observabilidad.md); for p in catalogo pedidos pagos notificaciones postgres valkey rabbitmq; do grep -qi \"$p\" <<<\"$b\" || { echo \"falta $p\"; exit 1; }; done",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-01-levantar-la-tienda/README.md, paso 5"
+    },
+    {
+      "id": "preguntas-8",
+      "descripcion": "La sección Preguntas tiene al menos 8 preguntas",
+      "cmd": "awk '/^## Preguntas/{f=1;next} /^## /{f=0} f' {proyecto}/mapa-observabilidad.md | grep -cE '^- .*[?]$'",
+      "assert": "stdout~^([89]|[1-9][0-9]+)$",
+      "pista": "2-practicas/lab-06-plan-de-instrumentacion/README.md, paso 1"
+    },
+    {
+      "id": "red-servicios",
+      "descripcion": "La tabla RED tiene una fila por cada servicio de la tienda",
+      "cmd": "t=$(awk '/^## RED/{f=1;next} /^## /{f=0} f' {proyecto}/mapa-observabilidad.md); for s in catalogo pedidos pagos notificaciones; do grep -qE \"^[|] *.?$s.? *[|]\" <<<\"$t\" || { echo \"falta $s\"; exit 1; }; done",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-05-red-y-use-a-mano/README.md, paso 4"
+    },
+    {
+      "id": "red-celdas",
+      "descripcion": "Ninguna celda de la tabla RED está vacía",
+      "cmd": "awk -F'|' '/^## RED/{f=1;next} /^## /{f=0} f && /^[|]/ && !/^[|]( *:?-+:? *[|])+ *$/ {n++; for(i=2;i<NF;i++) if ($i ~ /^ *$/) bad=1} END{exit (bad || n<2)}' {proyecto}/mapa-observabilidad.md",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-05-red-y-use-a-mano/README.md, paso 4"
+    },
+    {
+      "id": "use-recursos",
+      "descripcion": "La tabla USE cubre PostgreSQL, Valkey y RabbitMQ",
+      "cmd": "t=$(awk '/^## USE/{f=1;next} /^## /{f=0} f' {proyecto}/mapa-observabilidad.md); for r in postgres valkey rabbitmq; do grep -qi \"$r\" <<<\"$t\" || { echo \"falta $r\"; exit 1; }; done",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-05-red-y-use-a-mano/README.md, paso 7"
+    },
+    {
+      "id": "use-celdas",
+      "descripcion": "Ninguna celda de la tabla USE está vacía",
+      "cmd": "awk -F'|' '/^## USE/{f=1;next} /^## /{f=0} f && /^[|]/ && !/^[|]( *:?-+:? *[|])+ *$/ {n++; for(i=2;i<NF;i++) if ($i ~ /^ *$/) bad=1} END{exit (bad || n<2)}' {proyecto}/mapa-observabilidad.md",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-05-red-y-use-a-mano/README.md, paso 7"
+    },
+    {
+      "id": "slis-3",
+      "descripcion": "Hay al menos 3 SLIs candidatos",
+      "cmd": "awk '/^## SLIs/{f=1;next} /^## /{f=0} f' {proyecto}/mapa-observabilidad.md | grep -E '^[|]' | grep -vE '^[|]( *:?-+:? *[|])+ *$' | tail -n +2 | grep -c .",
+      "assert": "stdout~^([3-9]|[1-9][0-9]+)$",
+      "pista": "1-teoria/02-red-use-y-golden-signals.md, sección SLIs"
+    },
+    {
+      "id": "slis-celdas",
+      "descripcion": "Ninguna celda de la tabla de SLIs está vacía",
+      "cmd": "awk -F'|' '/^## SLIs/{f=1;next} /^## /{f=0} f && /^[|]/ && !/^[|]( *:?-+:? *[|])+ *$/ {n++; for(i=2;i<NF;i++) if ($i ~ /^ *$/) bad=1} END{exit (bad || n<2)}' {proyecto}/mapa-observabilidad.md",
+      "assert": "exit0",
+      "pista": "3-proyecto/README.md, entregable 5"
+    },
+    {
+      "id": "plan-senales",
+      "descripcion": "El plan de instrumentación asigna semana a logs, métricas, trazas y perfiles",
+      "cmd": "t=$(awk '/^## Plan de instrumentación/{f=1;next} /^## /{f=0} f' {proyecto}/mapa-observabilidad.md); for s in logs 'm[eé]tricas' trazas perfiles; do grep -qiE \"$s\" <<<\"$t\" || { echo \"falta $s\"; exit 1; }; done",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-06-plan-de-instrumentacion/README.md, paso 4"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">Cobros fantasma: cuando los logs se contradicen</title>
+  <desc id="d">pedidos envía POST /charges a toxiproxy, que lo pasa a pagos. pagos cobra, responde 201 y lo registra como éxito, pero toxiproxy retiene la respuesta. A los 2 segundos pedidos corta con ReadTimeout, libera el stock, guarda el pedido como payment_failed y registra un 402. La respuesta 201 llega a los 2,4 segundos y nadie la escucha. Sin duración ni identificador común no se pueden unir los dos logs.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="960" height="560" fill="#0d1117"/>
+  <rect width="5" height="560" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">Cobros fantasma: cuando los logs se contradicen</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">Avería 2 del lab 03: los dos logs dicen la verdad y ninguno basta.</text>
+  <rect x="125" y="80" width="150" height="44" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="200.0" y="107.0" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="middle">pedidos</text>
+  <line x1="200" y1="124" x2="200" y2="480" stroke="#30363d" stroke-width="2" stroke-dasharray="4 4"/>
+  <rect x="405" y="80" width="150" height="44" rx="7" fill="none" stroke="#8b949e" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="480.0" y="107.0" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="middle">toxiproxy</text>
+  <line x1="480" y1="124" x2="480" y2="480" stroke="#30363d" stroke-width="2" stroke-dasharray="4 4"/>
+  <rect x="685" y="80" width="150" height="44" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="760.0" y="107.0" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="middle">pagos</text>
+  <line x1="760" y1="124" x2="760" y2="480" stroke="#30363d" stroke-width="2" stroke-dasharray="4 4"/>
+  <text x="40" y="164" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">0 s</text>
+  <text x="40" y="224" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">0,1 s</text>
+  <text x="40" y="334" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">2 s</text>
+  <text x="40" y="448" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">2,4 s</text>
+  <polyline points="200,160 478,160" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="340.0" y="152" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="middle">POST /charges</text>
+  <polyline points="480,175 758,175" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="620.0" y="167" fill="#79c0ff" font-size="12" font-weight="400" text-anchor="middle">POST /charges</text>
+  <polyline points="760,220 482,220" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a-green)"/>
+  <text x="620.0" y="212" fill="#3fb950" font-size="12" font-weight="400" text-anchor="middle">201 Created</text>
+  <rect x="670" y="234" width="180" height="40" rx="6" fill="#161b22" stroke="#3fb950"/>
+  <text x="760" y="251" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">log de pagos:</text>
+  <text x="760" y="266" fill="#3fb950" font-size="12" font-weight="600" text-anchor="middle">201, cobro aprobado</text>
+  <rect x="466" y="222" width="28" height="218" rx="4" fill="#F5A800" opacity="0.25" stroke="#F5A800"/>
+  <text x="504" y="300" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start">retiene la respuesta</text>
+  <text x="504" y="316" fill="#F5A800" font-size="12" font-weight="400" text-anchor="start">(latencia inyectada)</text>
+  <rect x="100" y="314" width="200" height="34" rx="6" fill="#161b22" stroke="#f85149"/>
+  <text x="200" y="336" fill="#f85149" font-size="13" font-weight="600" text-anchor="middle">corta: ReadTimeout</text>
+  <text x="200" y="368" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">libera stock, guarda payment_failed</text>
+  <rect x="100" y="378" width="200" height="40" rx="6" fill="#161b22" stroke="#f85149"/>
+  <text x="200" y="395" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">log de pedidos:</text>
+  <text x="200" y="410" fill="#f85149" font-size="12" font-weight="600" text-anchor="middle">402, cobro fallido</text>
+  <polyline points="480,444 212,444" fill="none" stroke="#8b949e" stroke-width="2" stroke-dasharray="7 5"/>
+  <path d="M202,436 l14,16 M216,436 l-14,16" stroke="#f85149" stroke-width="2.5"/>
+  <text x="360.0" y="466" fill="#8b949e" font-size="12" font-weight="400" text-anchor="middle">el 201 llega tarde: nadie lo escucha</text>
+  <rect x="30" y="490" width="900" height="44" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text x="480" y="517" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="middle">Para unir las dos versiones faltan la duración de cada llamada y un identificador común.</text>
+</svg>

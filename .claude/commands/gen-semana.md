@@ -19,7 +19,7 @@ Ejemplo: `/gen-semana 01`
 3. Escribe `checks.json` **primero** (contrato en `docs/autograding.md`).
 4. Genera, en este orden:
    - `README.md` de la semana con su perfil de laboratorio
-   - `0-assets/` (≥ 3 diagramas Mermaid)
+   - `0-assets/` (≥ 3 diagramas SVG con la paleta de `CLAUDE.md`, enlazados desde la teoría o los labs)
    - `1-teoria/` (1–3 archivos, ≤ 600 palabras de prosa c/u)
    - `2-practicas/README.md` y los 6 labs, cada uno con `README.md`, `starter/` y `solucion/`
    - `3-proyecto/` con `README.md`, `starter/` y `solucion/`; los requisitos verificables son las `descripcion` de `checks.json`, literales

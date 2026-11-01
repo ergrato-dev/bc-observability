@@ -69,7 +69,7 @@ bootcamp/week-NN-nombre_del_tema/
 ├── README.md                  # Descripción, objetivos y navegación
 ├── rubrica-evaluacion.md      # Conocimiento 30% / Desempeño 40% / Producto 30%
 ├── checks.json                # Comprobaciones automáticas (autograding)
-├── 0-assets/                  # Diagramas Mermaid
+├── 0-assets/                  # Diagramas SVG
 ├── 1-teoria/                  # Contexto mínimo (≤ 45 min)
 ├── 2-practicas/               # 6 labs progresivos (~60 min c/u)
 ├── 3-proyecto/                # La capa semanal de la tienda (3 h)

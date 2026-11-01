@@ -124,7 +124,7 @@ week-NN-nombre_del_tema/
 ├── README.md                  # Descripción, objetivos, tabla de contenidos, navegación
 ├── rubrica-evaluacion.md      # Conocimiento 30 / Desempeño 40 / Producto 30
 ├── checks.json                # Autograding (ver docs/autograding.md)
-├── 0-assets/                  # Diagramas Mermaid en archivos .md (≥ 3)
+├── 0-assets/                  # Diagramas SVG (≥ 3), enlazados desde algún .md
 ├── 1-teoria/                  # 1–3 archivos, ≤ 600 palabras de prosa c/u
 ├── 2-practicas/
 │   ├── README.md              # Índice de labs con duración
@@ -217,7 +217,23 @@ Bandas: Sobresaliente 90–100, Notable 80–89, Aprobado 70–79.
 ## Contenido esperado por sección
 
 ### 0-assets/
-Mínimo 3 diagramas **Mermaid**, un archivo `.md` por diagrama (`NN-nombre.md`): título H1, bloque ` ```mermaid `, 2-3 líneas de explicación. Tipos preferidos: `flowchart`, `sequenceDiagram` (propagación de contexto, flujo de alertas).
+Mínimo 3 diagramas **SVG** (`NN-nombre.svg`, en orden de lectura), cada uno incrustado como imagen o enlazado desde algún `.md` de la semana, con la ruta relativa `../0-assets/NN-nombre.svg`. Nunca arte ASCII ni Mermaid en `0-assets/`; Mermaid solo vale en los entregables del alumno, donde el autograding lo lee como texto.
+
+- `viewBox`, `role="img"`, `<title>` y `<desc>` (la explicación del diagrama, para lectores de pantalla) obligatorios.
+- Tema oscuro, sin degradados, sans-serif. Una línea de subtítulo bajo el título dice qué hay que mirar.
+- Paleta, la misma de `assets/bootcamp-header.svg`:
+
+  | Color | Hex | Uso |
+  |---|---|---|
+  | Lienzo | `#0d1117` | Fondo |
+  | Superficie | `#161b22` | Cajas |
+  | Borde | `#30363d` | Líneas y separadores |
+  | Texto | `#e6edf3` / `#8b949e` | Principal / anotaciones |
+  | Ámbar OpenTelemetry | `#F5A800` | Servicios de la tienda, elemento principal, franja izquierda |
+  | Azul | `#79c0ff` | Llamadas síncronas, métricas |
+  | Morado | `#d2a8ff` | Eventos asíncronos, perfiles, metadatos |
+  | Verde | `#3fb950` | Éxito, logs |
+  | Rojo | `#f85149` | Error, fallo |
 
 ### 1-teoria/
 ≤ 600 palabras de prosa por archivo. Abre con "¿Por qué importa esto?", sigue con una referencia rápida (tabla o snippet) y un ejemplo mínimo que funciona al pegarlo. Termina enlazando al lab-01.

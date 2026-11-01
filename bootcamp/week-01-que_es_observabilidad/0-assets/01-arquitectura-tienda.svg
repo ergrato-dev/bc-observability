@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">Arquitectura de la tienda</title>
+  <desc id="d">trafico (k6) llama a catalogo y a pedidos. pedidos pide a catalogo precio y reserva por HTTP, cobra en pagos a través de toxiproxy con un timeout de 2 segundos, guarda en PostgreSQL y publica order.created en RabbitMQ, de donde consume notificaciones sin que pedidos espere. catalogo lee PostgreSQL a través de toxiproxy y usa Valkey como caché.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="960" height="580" fill="#0d1117"/>
+  <rect width="5" height="580" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">Arquitectura de la tienda</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">Flechas continuas: síncronas, quien llama espera. Discontinuas: asíncronas.</text>
+  <rect x="30" y="300" width="150" height="56" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="105.0" y="326.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">trafico</text>
+  <text x="105.0" y="343.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">k6 · 2 it/s</text>
+  <rect x="260" y="80" width="150" height="56" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="335.0" y="106.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">Valkey</text>
+  <text x="335.0" y="123.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">caché de productos</text>
+  <rect x="260" y="190" width="150" height="56" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="335.0" y="216.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">catalogo</text>
+  <text x="335.0" y="233.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">FastAPI · :18001</text>
+  <rect x="260" y="350" width="150" height="56" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="335.0" y="376.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">pedidos</text>
+  <text x="335.0" y="393.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">FastAPI · :18002</text>
+  <rect x="490" y="190" width="130" height="56" rx="7" fill="none" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="555.0" y="216.0" fill="#8b949e" font-size="15" font-weight="600" text-anchor="middle">toxiproxy</text>
+  <text x="555.0" y="233.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">avería de red</text>
+  <rect x="720" y="190" width="180" height="56" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="810.0" y="216.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">PostgreSQL</text>
+  <text x="810.0" y="233.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">productos y pedidos</text>
+  <rect x="490" y="350" width="130" height="56" rx="7" fill="none" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="555.0" y="376.0" fill="#8b949e" font-size="15" font-weight="600" text-anchor="middle">toxiproxy</text>
+  <text x="555.0" y="393.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">avería de red</text>
+  <rect x="720" y="350" width="180" height="56" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="810.0" y="376.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">pagos</text>
+  <text x="810.0" y="393.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">FastAPI · :18003</text>
+  <rect x="260" y="500" width="150" height="56" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="335.0" y="526.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">RabbitMQ</text>
+  <text x="335.0" y="543.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">exchange tienda</text>
+  <rect x="490" y="500" width="180" height="56" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="580.0" y="526.0" fill="#e6edf3" font-size="15" font-weight="600" text-anchor="middle">notificaciones</text>
+  <text x="580.0" y="543.0" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle">Express · :18004</text>
+  <polyline points="180,316 258,226" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <polyline points="180,340 258,372" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <polyline points="335,190 335,138" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="345" y="168" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">caché</text>
+  <polyline points="410,218 488,218" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="449" y="210" fill="#8b949e" font-size="12" font-weight="400" text-anchor="middle">SQL</text>
+  <polyline points="620,218 718,218" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <polyline points="335,350 335,248" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="345" y="296" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">HTTP: precio y reserva</text>
+  <polyline points="410,362 450,362 450,300 850,300 850,248" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="650" y="292" fill="#8b949e" font-size="12" font-weight="400" text-anchor="middle">SQL</text>
+  <polyline points="410,388 488,388" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <polyline points="620,388 718,388" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <text x="555" y="428" fill="#8b949e" font-size="12" font-weight="400" text-anchor="middle">cobro · timeout 2 s</text>
+  <polyline points="335,406 335,498" fill="none" stroke="#d2a8ff" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#a-purple)"/>
+  <text x="345" y="458" fill="#d2a8ff" font-size="12" font-weight="400" text-anchor="start">evento order.created</text>
+  <polyline points="410,528 488,528" fill="none" stroke="#d2a8ff" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#a-purple)"/>
+  <rect x="720" y="470" width="220" height="86" rx="7" fill="none" stroke="#30363d"/>
+  <polyline points="736,494 776,494" fill="none" stroke="#79c0ff" stroke-width="2"/>
+  <text x="786" y="498" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">síncrona (HTTP, SQL)</text>
+  <polyline points="736,516 776,516" fill="none" stroke="#d2a8ff" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="786" y="520" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">asíncrona (evento)</text>
+  <rect x="736" y="532" width="40" height="14" rx="3" fill="none" stroke="#F5A800" stroke-width="2"/>
+  <text x="786" y="544" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">servicio de la tienda</text>
+</svg>
