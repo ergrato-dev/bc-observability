@@ -4,6 +4,10 @@
 # señal bajo su perfil (metrics, logs, traces, profiles, scale, ai): ver
 # docs/perfiles-de-laboratorio.md.
 #
+# El código de los servicios se construye desde app/ o, si se define
+# TIENDA_SRC (ruta absoluta), desde esa carpeta: así cada semana trabaja sobre
+# su propia copia de la tienda. Úsalo a través de lab-up.sh con TIENDA=<carpeta>.
+#
 # Todos los puertos se publican solo en 127.0.0.1. Las contraseñas de este
 # archivo son del laboratorio: no salen de tu máquina.
 
@@ -23,13 +27,14 @@ services:
   catalogo:
     <<: *python-service
     build:
-      context: ./catalogo
+      context: ${TIENDA_SRC:-.}/catalogo
       dockerfile: ../Dockerfile.python
     image: tienda/catalogo:1.0.0
     environment:
       # Pasa por toxiproxy para poder inyectar latencia en la base de datos.
       DATABASE_URL: postgresql://tienda:tienda@toxiproxy:5433/tienda
       VALKEY_URL: redis://valkey:6379/0
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
     ports:
       - "127.0.0.1:18001:8000"
     depends_on:
@@ -43,7 +48,7 @@ services:
   pedidos:
     <<: *python-service
     build:
-      context: ./pedidos
+      context: ${TIENDA_SRC:-.}/pedidos
       dockerfile: ../Dockerfile.python
     image: tienda/pedidos:1.0.0
     environment:
@@ -53,6 +58,7 @@ services:
       # Pasa por toxiproxy para poder inyectar latencia o cortes de red.
       PAGOS_URL: http://toxiproxy:8666
       PAGOS_TIMEOUT_SECONDS: "2"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
     ports:
       - "127.0.0.1:18002:8000"
     depends_on:
@@ -68,7 +74,7 @@ services:
   pagos:
     <<: *python-service
     build:
-      context: ./pagos
+      context: ${TIENDA_SRC:-.}/pagos
       dockerfile: ../Dockerfile.python
     image: tienda/pagos:1.0.0
     environment:
@@ -76,16 +82,18 @@ services:
       PAGOS_LATENCY_MS: "80"
       PAGOS_JITTER_MS: "40"
       PAGOS_TIMEOUT_RATE: "0"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
     ports:
       - "127.0.0.1:18003:8000"
 
   notificaciones:
-    build: ./notificaciones
+    build: ${TIENDA_SRC:-.}/notificaciones
     image: tienda/notificaciones:1.0.0
     restart: unless-stopped
     environment:
       RABBITMQ_URL: amqp://tienda:tienda@rabbitmq:5672/
       NOTIFICACIONES_DELAY_MS: "50"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
     ports:
       - "127.0.0.1:18004:3000"
     healthcheck:

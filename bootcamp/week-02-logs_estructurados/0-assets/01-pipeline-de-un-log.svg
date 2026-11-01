@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 545" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">Del código a la línea JSON</title>
+  <desc id="d">Una llamada de structlog y una línea de logging de uvicorn entran en la misma cadena de procesadores: merge_contextvars añade el request_id, add_log_level el nivel, TimeStamper el timestamp en UTC, add_service el nombre del servicio, redact_pii tapa emails y tarjetas y JSONRenderer convierte el diccionario en una línea JSON que sale por stdout.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="960" height="545" fill="#0d1117"/>
+  <rect width="5" height="545" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">Del código a la línea JSON</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">Las líneas de tu código y las de uvicorn pasan por la misma cadena de procesadores.</text>
+  <rect x="30" y="100" width="270" height="78" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="46" y="124" fill="#F5A800" font-size="14" font-weight="600" text-anchor="start">structlog (tu código)</text>
+  <text x="46" y="146" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">log.warning(&quot;payment_failed&quot;,</text>
+  <text x="46" y="162" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  order_id=3312, reason=...)</text>
+  <rect x="30" y="214" width="270" height="78" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="46" y="238" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="start">logging (uvicorn, librerías)</text>
+  <text x="46" y="260" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">&quot;Started server process [1]&quot;</text>
+  <text x="46" y="276" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start">entra por foreign_pre_chain</text>
+  <polyline points="300,139 338,139" fill="none" stroke="#F5A800" stroke-width="2" marker-end="url(#a-amber)"/>
+  <polyline points="300,253 320,253 320,145 338,145" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="340" y="110" width="280" height="44" rx="7" fill="#161b22" stroke="#79c0ff" stroke-width="1.5"/>
+  <text x="356" y="137" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">merge_contextvars</text>
+  <text x="606" y="137" fill="#79c0ff" font-size="11" font-weight="400" text-anchor="end">+ request_id</text>
+  <polyline points="480,154 480,170" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="340" y="172" width="280" height="44" rx="7" fill="#161b22" stroke="#79c0ff" stroke-width="1.5"/>
+  <text x="356" y="199" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">add_log_level</text>
+  <text x="606" y="199" fill="#79c0ff" font-size="11" font-weight="400" text-anchor="end">+ level</text>
+  <polyline points="480,216 480,232" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="340" y="234" width="280" height="44" rx="7" fill="#161b22" stroke="#79c0ff" stroke-width="1.5"/>
+  <text x="356" y="261" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">TimeStamper(utc=True)</text>
+  <text x="606" y="261" fill="#79c0ff" font-size="11" font-weight="400" text-anchor="end">+ timestamp</text>
+  <polyline points="480,278 480,294" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="340" y="296" width="280" height="44" rx="7" fill="#161b22" stroke="#79c0ff" stroke-width="1.5"/>
+  <text x="356" y="323" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">add_service</text>
+  <text x="606" y="323" fill="#79c0ff" font-size="11" font-weight="400" text-anchor="end">+ service</text>
+  <polyline points="480,340 480,356" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="340" y="358" width="280" height="44" rx="7" fill="#161b22" stroke="#79c0ff" stroke-width="1.5"/>
+  <text x="356" y="385" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">redact_pii</text>
+  <text x="606" y="385" fill="#79c0ff" font-size="11" font-weight="400" text-anchor="end">tapa emails y tarjetas</text>
+  <polyline points="480,402 480,418" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="340" y="420" width="280" height="44" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="356" y="447" fill="#e6edf3" font-size="13" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">JSONRenderer</text>
+  <text x="606" y="447" fill="#3fb950" font-size="11" font-weight="400" text-anchor="end">diccionario a una línea</text>
+  <polyline points="620,442 635,442 635,280 648,280" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="650" y="160" width="295" height="240" rx="7" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="666" y="186" fill="#8b949e" font-size="12" font-weight="400" text-anchor="start">stdout: una línea por evento</text>
+  <text x="666" y="212" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">{</text>
+  <text x="666" y="232" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  &quot;timestamp&quot;: &quot;2026-10-31T10:15:02Z&quot;,</text>
+  <text x="666" y="252" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  &quot;level&quot;: &quot;warning&quot;,</text>
+  <text x="666" y="272" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  &quot;service&quot;: &quot;pedidos&quot;,</text>
+  <text x="666" y="292" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  &quot;event&quot;: &quot;payment_failed&quot;,</text>
+  <text x="666" y="312" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  &quot;request_id&quot;: &quot;7be7316f…&quot;,</text>
+  <text x="666" y="332" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  &quot;order_id&quot;: 3312,</text>
+  <text x="666" y="352" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">  &quot;reason&quot;: &quot;pagos_timeout&quot;</text>
+  <text x="666" y="372" fill="#3fb950" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">}</text>
+  <text x="30" y="520" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">El orden importa: redact_pii va al final para tapar también lo que añaden los procesadores anteriores.</text>
+</svg>

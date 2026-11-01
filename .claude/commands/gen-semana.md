@@ -22,9 +22,9 @@ Ejemplo: `/gen-semana 01`
    - `0-assets/` (≥ 3 diagramas SVG con la paleta de `CLAUDE.md`, enlazados desde la teoría o los labs)
    - `1-teoria/` (1–3 archivos, ≤ 600 palabras de prosa c/u)
    - `2-practicas/README.md` y los 6 labs, cada uno con `README.md`, `starter/` y `solucion/`
-   - `3-proyecto/` con `README.md`, `starter/` y `solucion/`; los requisitos verificables son las `descripcion` de `checks.json`, literales
+   - `3-proyecto/` con `README.md`, `starter/` y `solucion/`; los requisitos verificables son las `descripcion` de `checks.json`, literales. Si la semana cambia código de la tienda, `starter/` es una copia de la `solucion/` anterior (o de `app/`) con las dependencias nuevas ya en los lockfiles (ver "La tienda" en `CLAUDE.md`)
    - `rubrica-evaluacion.md`
-   - `4-recursos/` (ebooks-free, videografia, webgrafia) y `5-glosario/`
+   - `4-recursos/` (ebooks-free, videografia, webgrafia) y `5-glosario/` (alfabético y agrupado por letra)
 5. Valida:
    ```bash
    ./scripts/verificar-enlaces.sh

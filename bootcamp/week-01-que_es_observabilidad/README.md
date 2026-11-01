@@ -65,6 +65,6 @@ Desde la raíz del repositorio, con el laboratorio levantado:
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Índice del bootcamp](../README.md) | **Semana 01 — Qué es observabilidad** | Semana 02 — Logs estructurados (próximamente) |
+| [Índice del bootcamp](../README.md) | **Semana 01 — Qué es observabilidad** | [Semana 02 — Logs estructurados](../week-02-logs_estructurados/README.md) |
 
 [← Volver al índice del bootcamp](../README.md)

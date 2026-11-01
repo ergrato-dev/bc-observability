@@ -30,13 +30,13 @@ Verificadas el 2026-10-31 contra Docker Hub, ghcr.io, PyPI, el registro de npm y
 | kind | v0.33.0 | 18 | Imagen de nodo por defecto `kindest/node:v1.37.0` |
 | kubectl | v1.37.2 | 18 | Dentro del sesgo ±1 minor con el clúster |
 | jq | 1.6 o superior | 01 | Lo necesita `verificar-semana.sh` |
+| structlog | 26.1.0 | 02 | Release del 2026-06-06. Integrado con `logging` para que uvicorn salga en el mismo JSON |
+| pino | 10.4.0 | 02 | Release del 2026-10-02. Sin `pino-http`: un middleware propio de 20 líneas cumple el esquema común sin otra dependencia |
 
 ## Pendientes: se fijan al escribir su semana
 
 | Pieza | Semana | Imagen o paquete |
 |---|:--:|---|
-| structlog | 02 | PyPI |
-| pino, pino-http | 02 | npm registry, instalado con pnpm |
 | Prometheus y promtool | 03 | `prom/prometheus` |
 | prometheus-client | 03 | PyPI |
 | prom-client | 03 | npm registry, instalado con pnpm |

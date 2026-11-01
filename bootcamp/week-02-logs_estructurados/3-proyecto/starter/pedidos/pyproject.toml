@@ -1,0 +1,20 @@
+[project]
+name = "pedidos"
+version = "1.0.0"
+description = "Checkout de la tienda: reserva stock, cobra y publica el evento del pedido"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "fastapi>=0.162.0",
+    "uvicorn>=0.54.0",
+    "psycopg[binary]>=3.3.6",
+    "psycopg-pool>=3.3.3",
+    "httpx>=0.28.1",
+    "aio-pika>=10.2.1",
+    "structlog>=26.1.0",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.17.3"]
+
+[tool.uv]
+package = false

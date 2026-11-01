@@ -22,7 +22,7 @@ Este temario es el diseño aprobado. Al escribir cada semana, sus labs pueden aj
 Labs: levantar la tienda + `--doctor` · generar carga con k6 · depurar un fallo solo con `docker compose logs` (sufrirlo a propósito) · inventario de qué señales existen hoy · aplicar RED/USE a la tienda en papel · diseñar el plan de instrumentación.
 Proyecto: *Mapa de observabilidad* — diagrama de servicios, preguntas que hay que poder responder y SLIs candidatos.
 
-**S02 `week-02-logs_estructurados`** — Logs JSON, niveles, esquema común de campos, request ID, `structlog` en FastAPI, `pino`/`pino-http` en Node, logs de contenedor (stdout, driver, rotación), qué no loguear (PII, secretos).
+**S02 `week-02-logs_estructurados`** — Logs JSON, niveles, esquema común de campos, request ID, `structlog` en FastAPI, `pino` en Node, logs de contenedor (stdout, driver, rotación), qué no loguear (PII, secretos).
 Labs: logging plano a JSON · middleware structlog con contexto · pino en `notificaciones` · propagar `X-Request-ID` entre servicios · redacción de PII · consultar logs con `jq`.
 Proyecto: los 4 servicios con logs JSON de esquema común y request ID de punta a punta.
 

@@ -1,0 +1,126 @@
+{
+  "semana": "02",
+  "titulo": "Logs estructurados con structlog y pino",
+  "perfil": "core",
+  "checks": [
+    {
+      "id": "entrega-arranca",
+      "descripcion": "La tienda de la entrega se construye y sus cuatro servicios quedan healthy",
+      "cmd": "TIENDA={proyecto} ./scripts/lab-up.sh >/dev/null 2>&1; docker compose -f {raiz}/app/compose.yaml ps --format json catalogo pedidos pagos notificaciones | jq -s 'map(select(.Health==\"healthy\")) | length'",
+      "assert": "stdout~^4$",
+      "pista": "3-proyecto/README.md, punto de partida"
+    },
+    {
+      "id": "json-catalogo",
+      "descripcion": "Todas las líneas de log de catalogo son JSON",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix catalogo | jq -e . >/dev/null",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-01-logs-json-con-structlog/README.md, paso 5"
+    },
+    {
+      "id": "json-pedidos",
+      "descripcion": "Todas las líneas de log de pedidos son JSON",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix pedidos | jq -e . >/dev/null",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-04-propagar-el-request-id/README.md, paso 1"
+    },
+    {
+      "id": "json-pagos",
+      "descripcion": "Todas las líneas de log de pagos son JSON",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix pagos | jq -e . >/dev/null",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-04-propagar-el-request-id/README.md, paso 1"
+    },
+    {
+      "id": "json-notificaciones",
+      "descripcion": "Todas las líneas de log de notificaciones son JSON",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix notificaciones | jq -e . >/dev/null",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-03-pino-en-notificaciones/README.md, paso 3"
+    },
+    {
+      "id": "esquema-campos",
+      "descripcion": "Cada línea de log lleva timestamp, level, service y event",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix catalogo pedidos pagos notificaciones | jq -s 'map(select((has(\"timestamp\") and has(\"level\") and has(\"service\") and has(\"event\")) | not)) | length'",
+      "assert": "stdout~^0$",
+      "pista": "2-practicas/lab-01-logs-json-con-structlog/README.md, paso 3"
+    },
+    {
+      "id": "esquema-timestamp",
+      "descripcion": "El timestamp de todas las líneas es ISO 8601 en UTC",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix catalogo pedidos pagos notificaciones | jq -s --arg re '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?Z$' 'map(select(.timestamp // \"\" | tostring | test($re) | not)) | length'",
+      "assert": "stdout~^0$",
+      "pista": "2-practicas/lab-03-pino-en-notificaciones/README.md, paso 2"
+    },
+    {
+      "id": "esquema-level",
+      "descripcion": "El level de todas las líneas es debug, info, warning, error o critical",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix catalogo pedidos pagos notificaciones | jq -s 'map(select(.level | IN(\"debug\",\"info\",\"warning\",\"error\",\"critical\") | not)) | length'",
+      "assert": "stdout~^0$",
+      "pista": "2-practicas/lab-03-pino-en-notificaciones/README.md, paso 2"
+    },
+    {
+      "id": "esquema-service",
+      "descripcion": "Cada servicio se identifica con su nombre en el campo service",
+      "cmd": "for s in catalogo pedidos pagos notificaciones; do docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix $s | jq -e -s --arg s \"$s\" 'length > 0 and all(.service == $s)' >/dev/null 2>&1 || { echo \"service incorrecto en $s\"; exit 1; }; done",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-01-logs-json-con-structlog/README.md, paso 3"
+    },
+    {
+      "id": "sin-health",
+      "descripcion": "Los healthchecks no se registran en los logs",
+      "cmd": "docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix catalogo pedidos pagos notificaciones | jq -s 'map(select(.path == \"/health\")) | length'",
+      "assert": "stdout~^0$",
+      "pista": "2-practicas/lab-02-middleware-con-contexto/README.md, paso 3"
+    },
+    {
+      "id": "acceso-pedidos",
+      "descripcion": "pedidos registra cada POST /orders con status_code y duration_ms",
+      "cmd": "r=chk-$RANDOM$RANDOM; curl -s -o /dev/null -X POST http://127.0.0.1:18002/orders -H 'Content-Type: application/json' -H \"X-Request-ID: $r\" -d '{\"customer\":{\"email\":\"check@example.com\",\"card_number\":\"4111111111111111\"},\"items\":[{\"product_id\":7,\"quantity\":1}]}'; for i in $(seq 20); do docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix pedidos | jq -e -n --arg r \"$r\" 'any(inputs; .request_id == $r and .event == \"http_request\" and .route == \"/orders\" and (.status_code | type == \"number\") and (.duration_ms | type == \"number\"))' >/dev/null 2>&1 && exit 0; sleep 0.5; done; exit 1",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-04-propagar-el-request-id/README.md, paso 1"
+    },
+    {
+      "id": "request-id-eco",
+      "descripcion": "Los cuatro servicios devuelven el X-Request-ID que reciben",
+      "cmd": "for u in 18001/products/1 18002/orders/1 18003/admin/faults 18004/stats; do curl -si -H 'X-Request-ID: chk-eco' http://127.0.0.1:$u | grep -qi '^x-request-id: chk-eco' || { echo \"sin eco en $u\"; exit 1; }; done",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-02-middleware-con-contexto/README.md, paso 4"
+    },
+    {
+      "id": "propaga-catalogo",
+      "descripcion": "El request_id de un pedido llega a los logs de catalogo",
+      "cmd": "r=chk-$RANDOM$RANDOM; curl -s -o /dev/null -X POST http://127.0.0.1:18002/orders -H 'Content-Type: application/json' -H \"X-Request-ID: $r\" -d '{\"customer\":{\"email\":\"check@example.com\",\"card_number\":\"4111111111111111\"},\"items\":[{\"product_id\":7,\"quantity\":1}]}'; for i in $(seq 20); do docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix catalogo | jq -e -n --arg r \"$r\" 'any(inputs; .request_id == $r and true)' >/dev/null 2>&1 && exit 0; sleep 0.5; done; exit 1",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-04-propagar-el-request-id/README.md, paso 2"
+    },
+    {
+      "id": "propaga-pagos",
+      "descripcion": "El request_id de un pedido llega a los logs de pagos",
+      "cmd": "r=chk-$RANDOM$RANDOM; curl -s -o /dev/null -X POST http://127.0.0.1:18002/orders -H 'Content-Type: application/json' -H \"X-Request-ID: $r\" -d '{\"customer\":{\"email\":\"check@example.com\",\"card_number\":\"4111111111111111\"},\"items\":[{\"product_id\":7,\"quantity\":1}]}'; for i in $(seq 20); do docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix pagos | jq -e -n --arg r \"$r\" 'any(inputs; .request_id == $r and true)' >/dev/null 2>&1 && exit 0; sleep 0.5; done; exit 1",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-04-propagar-el-request-id/README.md, paso 3"
+    },
+    {
+      "id": "propaga-notificaciones",
+      "descripcion": "El request_id de un pedido llega a los logs de notificaciones",
+      "cmd": "for n in 1 2 3; do r=chk-$RANDOM$RANDOM; curl -s -o /dev/null -X POST http://127.0.0.1:18002/orders -H 'Content-Type: application/json' -H \"X-Request-ID: $r\" -d '{\"customer\":{\"email\":\"check@example.com\",\"card_number\":\"4111111111111111\"},\"items\":[{\"product_id\":7,\"quantity\":1}]}'; (for i in $(seq 20); do docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix notificaciones | jq -e -n --arg r \"$r\" 'any(inputs; .request_id == $r and true)' >/dev/null 2>&1 && exit 0; sleep 0.5; done; exit 1) && exit 0; done; exit 1",
+      "assert": "exit0",
+      "pista": "2-practicas/lab-04-propagar-el-request-id/README.md, paso 5"
+    },
+    {
+      "id": "cobro-fallido",
+      "descripcion": "pedidos registra cada cobro fallido como warning o error con su motivo",
+      "cmd": "F=http://127.0.0.1:18003/admin/faults; old=$(curl -sf $F); trap 'curl -s -X PUT $F -H \"Content-Type: application/json\" -d \"$old\" >/dev/null' EXIT; curl -sf -X PUT $F -H 'Content-Type: application/json' -d '{\"error_rate\":1,\"latency_ms\":0,\"jitter_ms\":0,\"timeout_rate\":0}' >/dev/null; r=chk-$RANDOM$RANDOM; curl -s -o /dev/null -X POST http://127.0.0.1:18002/orders -H 'Content-Type: application/json' -H \"X-Request-ID: $r\" -d '{\"customer\":{\"email\":\"check@example.com\",\"card_number\":\"4111111111111111\"},\"items\":[{\"product_id\":7,\"quantity\":1}]}'; for i in $(seq 20); do docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix pedidos | jq -e -n --arg r \"$r\" 'any(inputs; .request_id == $r and (.level == \"warning\" or .level == \"error\") and (.reason | type == \"string\"))' >/dev/null 2>&1 && exit 0; sleep 0.5; done; exit 1",
+      "assert": "exit0",
+      "pista": "3-proyecto/README.md, entregable 3"
+    },
+    {
+      "id": "sin-pii",
+      "descripcion": "Ningún log contiene emails ni números de tarjeta",
+      "cmd": "r=chk-$RANDOM$RANDOM; curl -s -o /dev/null -X POST http://127.0.0.1:18002/orders -H 'Content-Type: application/json' -H \"X-Request-ID: $r\" -d '{\"customer\":{\"email\":\"pii-check@example.com\",\"card_number\":\"4111111111111111\"},\"items\":[{\"product_id\":7,\"quantity\":1}]}'; sleep 2; docker compose -f {raiz}/app/compose.yaml logs --no-log-prefix catalogo pedidos pagos notificaciones | grep -cE '[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+[.][A-Za-z]{2,}|(^|[^0-9A-Za-z])[0-9]{13,19}([^0-9A-Za-z]|$)'",
+      "assert": "stdout~^0$",
+      "pista": "2-practicas/lab-05-fuera-datos-personales/README.md, paso 2"
+    }
+  ]
+}
