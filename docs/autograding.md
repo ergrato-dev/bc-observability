@@ -17,12 +17,12 @@ Salida:
 ```
 Semana 03 — Métricas e instrumentación con Prometheus  [perfil: metrics]
 
-  ✅ catalogo expone /metrics en formato Prometheus
-  ✅ Prometheus tiene todos los servicios de la tienda en UP
-  ❌ pedidos mide la duración de las peticiones con un histograma
-     pista: 2-practicas/lab-02-metricas-red/README.md, paso 4
+  ✅ catalogo expone en /metrics el histograma http_server_request_duration_seconds
+  ❌ pedidos expone en /metrics el histograma http_server_request_duration_seconds
+     pista: 2-practicas/lab-02-metricas-red/README.md, paso 5
+  ...
 
-  8/9 comprobaciones superadas.
+  18/19 comprobaciones superadas.
 ```
 
 Sale con 0 si pasan todas, con 1 si falla alguna. **Cada pista dice en qué lab y en qué paso se arregla**: si una pista no lleva ahí, es un fallo del material y merece un issue.
@@ -40,18 +40,18 @@ Un archivo por semana, en la raíz de la carpeta de la semana.
   "perfil": "metrics",
   "checks": [
     {
-      "id": "catalogo-metrics",
-      "descripcion": "catalogo expone /metrics en formato Prometheus",
-      "cmd": "curl -sf http://127.0.0.1:18001/metrics",
-      "assert": "stdout~^# TYPE ",
+      "id": "metrics-catalogo",
+      "descripcion": "catalogo expone en /metrics el histograma http_server_request_duration_seconds",
+      "cmd": "curl -s 127.0.0.1:18001/metrics | grep '^# TYPE http_server_request_duration_seconds '",
+      "assert": "stdout~histogram$",
       "pista": "2-practicas/lab-01-primer-metrics/README.md, paso 3"
     },
     {
-      "id": "targets-up",
-      "descripcion": "Prometheus tiene todos los servicios de la tienda en UP",
-      "cmd": "curl -sf 'http://127.0.0.1:9090/api/v1/query' --data-urlencode 'query=min(up{job=~\"tienda-.*\"})' | jq -r '.data.result[0].value[1]'",
-      "assert": "stdout~^1$",
-      "pista": "2-practicas/lab-04-service-discovery/README.md, paso 3"
+      "id": "instance-estable",
+      "descripcion": "El label instance es el nombre del contenedor, no su IP",
+      "cmd": "curl -s 127.0.0.1:9090/api/v1/targets | jq -r '.data.activeTargets[] | select(.labels.job==\"catalogo\") | .labels.instance'",
+      "assert": "stdout~^tienda-catalogo-1$",
+      "pista": "2-practicas/lab-04-service-discovery-de-docker/README.md, paso 5"
     }
   ]
 }

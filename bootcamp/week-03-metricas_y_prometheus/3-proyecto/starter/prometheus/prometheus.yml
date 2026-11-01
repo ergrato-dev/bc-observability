@@ -1,0 +1,12 @@
+# Configuración de Prometheus de tu tienda. La monta compose.yaml en
+# /etc/prometheus: tras cambiarla, recárgala con
+#   curl -X POST http://127.0.0.1:9090/-/reload
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # TODO (lab 04): descubre los servicios de la tienda y los exporters en Docker.

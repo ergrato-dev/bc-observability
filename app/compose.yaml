@@ -8,6 +8,9 @@
 # TIENDA_SRC (ruta absoluta), desde esa carpeta: así cada semana trabaja sobre
 # su propia copia de la tienda. Úsalo a través de lab-up.sh con TIENDA=<carpeta>.
 #
+# Prometheus descubre sus targets en Docker: scrapea los contenedores con la
+# etiqueta prometheus.io/scrape=true, en el puerto de prometheus.io/port.
+#
 # Todos los puertos se publican solo en 127.0.0.1. Las contraseñas de este
 # archivo son del laboratorio: no salen de tu máquina.
 
@@ -15,6 +18,9 @@ name: tienda
 
 x-python-service: &python-service
   restart: unless-stopped
+  labels:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
   healthcheck:
     test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
     interval: 10s
@@ -90,6 +96,9 @@ services:
     build: ${TIENDA_SRC:-.}/notificaciones
     image: tienda/notificaciones:1.0.0
     restart: unless-stopped
+    labels:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "3000"
     environment:
       RABBITMQ_URL: amqp://tienda:tienda@rabbitmq:5672/
       NOTIFICACIONES_DELAY_MS: "50"
@@ -174,6 +183,77 @@ services:
       pedidos:
         condition: service_healthy
 
+  # ── Métricas (perfil metrics) ───────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v3.15.1
+    profiles: [metrics]
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
+      - --web.enable-lifecycle   # POST /-/reload relee la configuración
+    # La configuración es parte de tu entrega: vive en tu copia de la tienda.
+    volumes:
+      - ${TIENDA_SRC:-.}/prometheus:/etc/prometheus:ro
+      - prometheus-data:/prometheus
+      # Solo lectura para el service discovery de Docker. Quien lee este socket
+      # controla Docker: aceptable en tu laboratorio, nunca en producción.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    group_add:
+      - "${DOCKER_GID:-0}"   # grupo dueño del socket; lo calcula lab-up.sh
+    labels:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9090"
+    ports:
+      - "127.0.0.1:9090:9090"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:9090/-/ready"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  node-exporter:
+    image: prom/node-exporter:v1.12.1
+    profiles: [metrics]
+    restart: unless-stopped
+    command:
+      - --path.rootfs=/host
+      # Sin los montajes de sistema y de Docker (en WSL2, /run/user sale duplicado).
+      - --collector.filesystem.mount-points-exclude=^/(dev|proc|run|sys|var/lib/docker/.+)($|/)
+    pid: host
+    volumes:
+      - /:/host:ro
+    labels:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9100"
+    ports:
+      - "127.0.0.1:9100:9100"
+
+  cadvisor:
+    image: ghcr.io/google/cadvisor:0.60.6
+    profiles: [metrics]
+    restart: unless-stopped
+    command:
+      - --docker_only=true
+      - --housekeeping_interval=15s
+      - --store_container_labels=false
+      - --whitelisted_container_labels=com.docker.compose.project,com.docker.compose.service
+    privileged: true   # lee los cgroups y el disco del host
+    devices:
+      - /dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    labels:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8080"
+    ports:
+      - "127.0.0.1:8080:8080"
+
 volumes:
   postgres-data:
   rabbitmq-data:
+  prometheus-data:

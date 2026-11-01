@@ -10,7 +10,7 @@ Todo el laboratorio corre en Docker Compose desde `app/compose.yaml`, salvo la S
 | Perfil | Qué levanta | Incluye | Semanas | RAM aprox. |
 |---|---|---|:--:|:--:|
 | `core` | tienda (4 servicios), PostgreSQL, Valkey, RabbitMQ, k6, toxiproxy | — | 01-02 | ~0,5 GB (medido el 2026-10-31) |
-| `metrics` | Prometheus, exporters, Grafana, Alertmanager | `core` | 03-07 | ~3 GB |
+| `metrics` | Prometheus, node_exporter, cAdvisor; Grafana (06) y Alertmanager (07) | `core` | 03-07 | ~0,6 GB en la semana 03 (medido el 2026-10-31, recién arrancado) |
 | `logs` | Loki, Fluent Bit | `metrics` | 08 | ~4 GB |
 | `traces` | Jaeger, Collector, Tempo | `logs` | 09-13 | ~5-6 GB |
 | `profiles` | Pyroscope, OBI | `traces` | 14-16 | ~6-7 GB |

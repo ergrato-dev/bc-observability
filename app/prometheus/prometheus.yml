@@ -1,0 +1,10 @@
+# Configuración de Prometheus de la tienda sin instrumentar: solo se scrapea a
+# sí mismo. Desde la semana 03, cada semana trae la suya en su copia de la
+# tienda (<copia>/prometheus/prometheus.yml).
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

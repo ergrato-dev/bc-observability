@@ -14,6 +14,9 @@ const PEDIDOS = __ENV.PEDIDOS_URL || "http://pedidos:8000";
 const SEARCHES = ["cafe organico", "te premium", "taza", "molino artesanal", "termo"];
 
 export const options = {
+  // k6 cachea el DNS 5 minutos: al recrear un servicio cambia su IP y el tráfico
+  // fallaría hasta entonces.
+  dns: { ttl: "1s" },
   scenarios: {
     compra: {
       executor: "constant-arrival-rate",

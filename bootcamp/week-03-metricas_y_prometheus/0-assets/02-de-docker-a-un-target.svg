@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 455" role="img" aria-labelledby="t d" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="t">De un contenedor de Docker a un target</title>
+  <desc id="d">Prometheus pregunta a Docker por los contenedores del proyecto. tienda-catalogo-1 lleva las etiquetas prometheus.io/scrape=true y prometheus.io/port=8000, que llegan como metadatos __meta_docker_*. Las reglas de relabel_configs lo conservan (keep), construyen la dirección con su IP y su puerto, ponen job igual al servicio de Compose e instance igual al nombre del contenedor. El resultado es un target con job catalogo que se scrapea en /metrics. tienda-postgres-1 no lleva la etiqueta y la regla keep lo descarta.</desc>
+  <defs><marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#79c0ff"/></marker><marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d2a8ff"/></marker><marker id="a-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/></marker><marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/></marker><marker id="a-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f85149"/></marker><marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F5A800"/></marker></defs>
+  <rect width="960" height="455" fill="#0d1117"/>
+  <rect width="5" height="455" fill="#F5A800"/>
+  <text x="30" y="38" fill="#e6edf3" font-size="20" font-weight="600" text-anchor="start">De un contenedor de Docker a un target</text>
+  <text x="30" y="62" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">Las etiquetas del contenedor deciden si se scrapea; el relabeling, con qué labels se guarda.</text>
+  <rect x="30" y="92" width="280" height="150" rx="7" fill="#161b22" stroke="#F5A800" stroke-width="2"/>
+  <text x="46" y="116" fill="#F5A800" font-size="14" font-weight="600" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">tienda-catalogo-1</text>
+  <text x="46" y="140" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">IP 192.168.48.11</text>
+  <text x="46" y="162" fill="#e6edf3" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">com.docker.compose.service=catalogo</text>
+  <text x="46" y="182" fill="#3fb950" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">prometheus.io/scrape=true</text>
+  <text x="46" y="202" fill="#3fb950" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">prometheus.io/port=8000</text>
+  <text x="46" y="226" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start">etiquetas de compose.yaml</text>
+  <rect x="30" y="300" width="280" height="80" rx="7" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="46" y="324" fill="#e6edf3" font-size="14" font-weight="600" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">tienda-postgres-1</text>
+  <text x="46" y="348" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">sin prometheus.io/scrape</text>
+  <polyline points="310,166 336,166" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <polyline points="310,340 336,340" fill="none" stroke="#8b949e" stroke-width="2" marker-end="url(#a-muted)"/>
+  <rect x="338" y="92" width="318" height="150" rx="7" fill="#0d1117" stroke="#d2a8ff"/>
+  <text x="352" y="116" fill="#d2a8ff" font-size="12" font-weight="600" text-anchor="start">metadatos que crea docker_sd_configs</text>
+  <text x="352" y="138" fill="#e6edf3" font-size="10.5" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">__meta_docker_container_name=</text>
+  <text x="352" y="156" fill="#e6edf3" font-size="10.5" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">    &quot;/tienda-catalogo-1&quot;</text>
+  <text x="352" y="174" fill="#e6edf3" font-size="10.5" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">__meta_docker_network_ip=&quot;192.168.48.11&quot;</text>
+  <text x="352" y="192" fill="#e6edf3" font-size="10.5" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">__meta_docker_container_label_</text>
+  <text x="352" y="210" fill="#e6edf3" font-size="10.5" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">    prometheus_io_scrape=&quot;true&quot;</text>
+  <text x="352" y="228" fill="#e6edf3" font-size="10.5" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">    prometheus_io_port=&quot;8000&quot;</text>
+  <rect x="338" y="300" width="286" height="80" rx="7" fill="none" stroke="#f85149" stroke-dasharray="6 4"/>
+  <text x="481" y="334" fill="#f85149" font-size="13" font-weight="600" text-anchor="middle">action: keep → descartado</text>
+  <text x="481" y="356" fill="#8b949e" font-size="11" font-weight="400" text-anchor="middle" font-family="'JetBrains Mono', 'Courier New', monospace">no lleva scrape=&quot;true&quot;</text>
+  <polyline points="656,166 682,166" fill="none" stroke="#79c0ff" stroke-width="2" marker-end="url(#a-blue)"/>
+  <rect x="684" y="92" width="262" height="32" rx="6" fill="#161b22" stroke="#79c0ff"/>
+  <text x="698" y="113" fill="#79c0ff" font-size="12" font-weight="600" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">keep</text>
+  <text x="934" y="113" fill="#8b949e" font-size="11" font-weight="400" text-anchor="end">solo si scrape=&quot;true&quot;</text>
+  <rect x="684" y="132" width="262" height="32" rx="6" fill="#161b22" stroke="#79c0ff"/>
+  <text x="698" y="153" fill="#79c0ff" font-size="12" font-weight="600" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">__address__</text>
+  <text x="934" y="153" fill="#8b949e" font-size="11" font-weight="400" text-anchor="end">IP + prometheus_io_port</text>
+  <rect x="684" y="172" width="262" height="32" rx="6" fill="#161b22" stroke="#79c0ff"/>
+  <text x="698" y="193" fill="#79c0ff" font-size="12" font-weight="600" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">job</text>
+  <text x="934" y="193" fill="#8b949e" font-size="11" font-weight="400" text-anchor="end">servicio de Compose</text>
+  <rect x="684" y="212" width="262" height="32" rx="6" fill="#161b22" stroke="#79c0ff"/>
+  <text x="698" y="233" fill="#79c0ff" font-size="12" font-weight="600" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">instance</text>
+  <text x="934" y="233" fill="#8b949e" font-size="11" font-weight="400" text-anchor="end">nombre sin la barra</text>
+  <text x="815" y="84" fill="#79c0ff" font-size="12" font-weight="600" text-anchor="middle">relabel_configs</text>
+  <polyline points="815,248 815,292" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="646" y="294" width="300" height="110" rx="7" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
+  <text x="662" y="318" fill="#3fb950" font-size="12" font-weight="600" text-anchor="start">target</text>
+  <text x="662" y="342" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">job=&quot;catalogo&quot;</text>
+  <text x="662" y="362" fill="#e6edf3" font-size="12" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">instance=&quot;tienda-catalogo-1&quot;</text>
+  <text x="662" y="384" fill="#8b949e" font-size="11" font-weight="400" text-anchor="start" font-family="'JetBrains Mono', 'Courier New', monospace">GET http://192.168.48.11:8000/metrics</text>
+  <text x="30" y="432" fill="#8b949e" font-size="13" font-weight="400" text-anchor="start">Los labels que empiezan por __ desaparecen al terminar: solo job, instance y los que crees quedan en cada serie.</text>
+</svg>
