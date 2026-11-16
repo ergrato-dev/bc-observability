@@ -12,16 +12,16 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está p
 
 | Semana | Tema | Estado |
 |:--:|---|:--:|
-| [01](week-01-que_es_observabilidad/README.md) | Qué es observabilidad: señales, RED, USE y golden signals | ✅ |
-| [02](week-02-logs_estructurados/README.md) | Logs estructurados con structlog y pino | ✅ |
-| [03](week-03-metricas_y_prometheus/README.md) | Métricas e instrumentación con Prometheus | ✅ |
-| [04](week-04-promql_fundamentos/README.md) | PromQL: fundamentos | ✅ |
+| [01](week-01-que_es_observabilidad/README.md) | [Qué es observabilidad: señales, RED, USE y golden signals](week-01-que_es_observabilidad/README.md) | ✅ |
+| [02](week-02-logs_estructurados/README.md) | [Logs estructurados con structlog y pino](week-02-logs_estructurados/README.md) | ✅ |
+| [03](week-03-metricas_y_prometheus/README.md) | [Métricas e instrumentación con Prometheus](week-03-metricas_y_prometheus/README.md) | ✅ |
+| [04](week-04-promql_fundamentos/README.md) | [PromQL: fundamentos](week-04-promql_fundamentos/README.md) | ✅ |
 
 ### Fase 2 — Visualización, alertas y logs centralizados (S05-08, 40 h)
 
 | Semana | Tema | Estado |
 |:--:|---|:--:|
-| [05](week-05-promql_avanzado_y_recording_rules/README.md) | PromQL avanzado y recording rules | ✅ |
+| [05](week-05-promql_avanzado_y_recording_rules/README.md) | [PromQL avanzado y recording rules](week-05-promql_avanzado_y_recording_rules/README.md) | ✅ |
 | 06 | Grafana y dashboards como código | ⬜ |
 | 07 | Alertas y Alertmanager | ⬜ |
 | 08 | Logs centralizados con Loki y patrones de logs | ⬜ |
